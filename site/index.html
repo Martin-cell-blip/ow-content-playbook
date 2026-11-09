@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>守望先锋 · 回坑说明书｜面向回流玩家的跨平台内容方案（未发布）</title>
+<meta name="description" content="离开 3 个月以上的守望先锋国服玩家，回归第一周怎么接上进度：变了什么、能领什么、先玩什么、和谁玩。附三平台真实案例、内容样稿与验证方案。">
+<style>
+:root{
+  --paper:#f5efe6; --paper-2:#ece3d6; --ink:#1e1719; --ink-2:#5a4e50; --rule:#d9ccba;
+  --red:#7a1f2b; --red-2:#a3303f; --gold:#b98a3a; --teal:#2f6b6a; --slate:#55606b;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","SimSun",serif;
+  --sans:"Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--red);text-decoration-thickness:1px;text-underline-offset:3px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;letter-spacing:.01em;line-height:1.25;margin:0 0 .6em}
+h2{font-size:1.75rem;border-left:6px solid var(--red);padding-left:.6em;margin-top:0}
+h3{font-size:1.2rem;color:var(--red);margin-top:1.6em}
+h4{font-size:1.02rem;margin-top:1.2em}
+p{margin:.5em 0 .9em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1rem,3vw,2.5rem)}
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(245,239,230,.92);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--rule)}
+.nav .wrap{display:flex;align-items:center;gap:1rem;height:3.4rem}
+.brand{font-family:var(--serif);font-weight:700;color:var(--red);white-space:nowrap}
+.nav ul{display:flex;gap:.2rem .9rem;list-style:none;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.nav li a{color:var(--ink-2);text-decoration:none;font-size:.92rem;white-space:nowrap;padding:.3rem 0;border-bottom:2px solid transparent}
+.nav li a:hover{border-color:var(--gold);color:var(--ink)}
+/* hero */
+.hero{padding:clamp(2.5rem,6vw,5rem) 0 2.5rem;background:
+  radial-gradient(1200px 400px at 10% -10%,rgba(122,31,43,.18),transparent 60%),
+  radial-gradient(800px 300px at 95% 0%,rgba(185,138,58,.18),transparent 60%)}
+.kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:1rem}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);max-width:18ch}
+.hero .lede{font-size:1.12rem;max-width:62ch;color:var(--ink-2)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-top:1.4rem;font-size:.86rem;color:var(--ink-2)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:2.2rem}
+.stat{background:var(--paper);padding:1rem 1.1rem}
+.stat b{display:block;font-family:var(--serif);font-size:1.9rem;color:var(--red);line-height:1.1}
+.stat span{font-size:.84rem;color:var(--ink-2)}
+/* sections */
+section{padding:3rem 0 2.2rem;border-top:1px solid var(--rule)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem}
+.card{background:#fff;border:1px solid var(--rule);border-radius:4px;padding:1.1rem 1.25rem;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.card h4{margin-top:0}
+.tag{display:inline-block;font-size:.72rem;font-family:var(--mono);letter-spacing:.06em;padding:.12rem .45rem;border-radius:2px;border:1px solid currentColor;vertical-align:middle;margin-left:.3rem}
+.tag.official{color:var(--teal)} .tag.obs{color:var(--slate)} .tag.infer{color:var(--gold)} .tag.todo{color:var(--red-2)} .tag.verify{color:#8a4b00;border-style:dashed}
+.callout{border:1px solid var(--rule);border-left:5px solid var(--gold);background:var(--paper-2);padding:.9rem 1.1rem;margin:1.2rem 0;border-radius:3px}
+.callout.red{border-left-color:var(--red)}
+.cards7{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:1rem 0}
+.card7{background:#fff;border:1px solid var(--line,#e6e1d8);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;break-inside:avoid}
+.card7 .n{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;color:var(--red)}
+.card7 h4{margin:.2rem 0 .3rem;font-size:1.05rem}
+.card7 .q{font-family:var(--serif);font-weight:700;color:var(--red-2);margin:0 0 .4rem}
+.card7 p{margin:0;font-size:.92rem;line-height:1.6}
+.card7 .src{display:block;margin-top:.5rem;font-size:.75rem;color:var(--slate)}
+/* details */
+details{border:1px solid var(--rule);background:#fff;border-radius:4px;margin:.6rem 0}
+summary{cursor:pointer;padding:.85rem 1.1rem;font-weight:700;font-family:var(--serif);font-size:1.05rem;list-style:none;display:flex;align-items:center;gap:.6rem}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"＋";color:var(--red);font-weight:400;width:1em}
+details[open] summary::before{content:"－"}
+details[open] summary{border-bottom:1px solid var(--rule)}
+details::details-content{padding:0 1.1rem}
+details > :not(summary){padding-left:1.1rem;padding-right:1.1rem}
+details > .inner{padding:.6rem 1.1rem 1rem}
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;margin:.6rem 0 1.2rem;background:#fff}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:.5rem .6rem;vertical-align:top;text-align:left}
+.tbl th{background:var(--paper-2);font-weight:700;position:sticky;top:3.4rem}
+.tbl td.num{text-align:right;font-family:var(--mono);font-size:.84rem;white-space:nowrap}
+.tbl caption{caption-side:top;text-align:left;font-weight:700;padding:.3rem 0;font-family:var(--serif)}
+.scroll{overflow-x:auto}
+@media (max-width:720px){
+  .tbl.stack thead{display:none}
+  .tbl.stack tr{display:block;border:1px solid var(--rule);margin-bottom:.8rem}
+  .tbl.stack td{display:grid;grid-template-columns:7.5rem 1fr;border:0;border-bottom:1px dashed var(--rule)}
+  .tbl.stack td::before{content:attr(data-h);color:var(--ink-2);font-size:.8rem}
+}
+/* checklist */
+.check{list-style:none;padding:0;margin:.4rem 0}
+.check li{padding:.45rem 0 .45rem 2rem;position:relative;border-bottom:1px dashed var(--rule)}
+.check li::before{content:"";position:absolute;left:.3rem;top:.75rem;width:.95rem;height:.95rem;border:2px solid var(--red);border-radius:2px}
+.timeline{list-style:none;padding:0;margin:0;border-left:2px solid var(--rule)}
+.timeline li{position:relative;padding:.2rem 0 .9rem 1.4rem}
+.timeline li::before{content:"";position:absolute;left:-7px;top:.55rem;width:12px;height:12px;border-radius:50%;background:var(--red)}
+.timeline time{font-family:var(--mono);font-size:.82rem;color:var(--ink-2);display:block}
+.small{font-size:.86rem;color:var(--ink-2)}
+.pill-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.pill{border:1px solid var(--rule);border-radius:999px;padding:.2rem .7rem;font-size:.84rem;background:#fff}
+blockquote{margin:.6rem 0;padding:.5rem .9rem;border-left:3px solid var(--gold);background:#fff;color:var(--ink-2);font-size:.92rem}
+footer{padding:2.5rem 0 3rem;color:var(--ink-2);font-size:.86rem;border-top:1px solid var(--rule)}
+/* print */
+@media print{
+  .nav{display:none}
+  body{background:#fff;font-size:11pt}
+  details{break-inside:avoid}
+  details:not([open])::details-content{content-visibility:visible;display:block}
+  details > .inner{display:block}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
+  .tbl th{position:static}
+  section{break-before:page;padding-top:1rem}
+  section:first-of-type{break-before:auto}
+}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="页内导航"><div class="wrap">
+  <span class="brand">回坑说明书</span>
+  <ul>
+    <li><a href="#sample7">七图样张</a></li>
+    <li><a href="#manual">说明书</a></li>
+    <li><a href="#why">为什么做这个</a></li>
+    <li><a href="#plan">内容方案</a></li>
+    <li><a href="#samples">样稿</a></li>
+    <li><a href="#cases">真实案例</a></li>
+    <li><a href="#verify">验证方案</a></li>
+    <li><a href="#facts">事实与来源</a></li>
+  </ul>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">Overwatch · CN · 2026.11 · 作品集项目 · 未发布</div>
+  <h1>离开多久都适用：《守望先锋》回坑说明书</h1>
+  <p class="lede">给离开 3 个月以上、因新赛季、朋友或 12 月广州总决赛重新打开游戏的国服玩家。一个目标：回归第一周<strong>接上进度</strong>——变了什么、能领什么、先玩什么、和谁玩。</p>
+  <div class="meta">
+    <span>平台：B 站（完整版）+ 小红书（切片与承接）</span>
+    <span>观察日期：2026-11-09</span>
+    <span>作者：马准名</span>
+    <span><span class="tag todo">未发布</span> 内容研究与策划作品；所有互动数字均为他人内容的公开可见数据</span>
+  </div>
+  <div class="stats" id="stats"></div>
+</div></header>
+
+<main>
+<!-- ============ 七图文字样张 ============ -->
+<section id="sample7"><div class="wrap">
+  <h2>先看成品：选题一 · 小红书版七图文字样张 <span class="tag todo">未发布</span></h2>
+  <p class="small">「回坑先查本命｜黑影玩家注意」的七张图文字已排版（PNG 见 deliverables/七图文字样张），可直接拿去试读。事实只来自官网公告并标来源；写「复建建议」的是本人建议。其余五份样稿仍是草稿；本人录屏、试读、发布都还没做。</p>
+  <div class="cards7" id="cards7"></div>
+  <p class="small"><strong>随图正文（150 字内）</strong>：回坑先查本命｜黑影玩家注意。先想想你最后一次玩是哪个赛季，再按七张图顺序看：查本命 → 接旧战令 → 看争霸之战的任务条件 → 排时间 → 打第一局。评论区写你离开多久 + 本命 + 最困惑的一件事，我按人回。#守望先锋回坑说明书</p>
+</div></section>
+
+<!-- ============ 说明书本体 ============ -->
+<section id="manual"><div class="wrap">
+  <h2>说明书本体：按你离开多久来看</h2>
+  <p class="small">事实来自国服官网公告（编号见页底「事实与来源」）。活动日期发布前须重新核对官网。<span class="tag official">官方</span> 官网可查　<span class="tag obs">观察</span> 平台可见数据　<span class="tag infer">推断</span> 本人判断　<span class="tag todo">待核验</span> 发布前必须替换</p>
+
+  <div class="callout red"><strong>先回答最常见的三个问题。</strong><br>
+  ① 我以前的东西还在吗？——在。第 1–9、15 赛季往期战令返场，从当年进度继续，免费进度也继承（F04）。<br>
+  ② 我的本命还能玩吗？——黑影改成支援了（F04），其余按下面的「本命体检表」查。<br>
+  ③ 环境还那么差吗？——官方 9-23 自报累计禁赛 30,776 账号（F03），11-04 起新处罚生效（F07）。这是官方说的，效果自己玩两局判断。</div>
+
+  <h3>第一层：你离开了不到 3 个月（9 月之后没玩）<span class="small">　补充层；本方案的主要对象是后两层</span></h3>
+  <details name="layer" open><summary>你错过的 7 件事</summary><div class="inner">
+    <ol class="timeline">
+      <li><time>2026-10-07 · F04</time>往期战令返场：第 1–9、15 赛季，从当时进度继续；免费进度继承。<strong>这是回归最大的好消息。</strong></li>
+      <li><time>2026-10-07 · F04</time>新支援英雄「血律」。</li>
+      <li><time>2026-10-07 · F04</time>黑影由输出改为支援——官方称史上对现有英雄最大幅度的改动。黑影玩家先看本命体检表。</li>
+      <li><time>2026-10-07 · F04</time>多年来第一张新运载目标地图。</li>
+      <li><time>2026-11-04 · F06</time>争霸之战活动战令（至 12-08）：24 级，免费线靠游玩和完成挑战推进、推到位解锁史诗西格玛皮肤（不是登录即得）；1000 金币升级可得传奇末日铁拳皮肤 / 斩仇传奇武器。</li>
+      <li><time>2026-11-04 · F06</time>伊芙计划（《剑星》）联动 11-04 至 11-18；死灵骑士路霸神话皮肤；轰轰钻机挖宝（至 12-08）；黑色星期五促销（至 12-08）。</li>
+      <li><time>2026-11-04 00:00 · F07</time>游戏环境治理专项行动新处罚生效：代练、演员、剧组、炸鱼、外挂。</li>
+    </ol>
+  </div></details>
+
+  <h3>第二层：你离开了 3–12 个月（今年春天之后没玩）</h3>
+  <details name="layer"><summary>以上全部，再加上这几件</summary><div class="inner">
+    <ol class="timeline">
+      <li><time>2026-08-12 · F01</time>第 4 赛季「釜山群英」：新重装 D.Mon；<strong>战令改版</strong>——80 级拆成若干「升级路线」可自选顺序，高级战令有一次「等级破解」换皮肤。战令页面长得不一样了，但你的旧进度在。</li>
+      <li><time>2026-09-13 至 10-06 · F02</time>嘉年华神话代券（完成一局换任一往期神话礼包）<strong>已截止</strong>。别被旧视频误导。</li>
+      <li><time>2026-10-07 · F05</time>「圣邪颂歌」登录送 3 抽——这个你有。注册不足 60 天的新手满级神话礼包——<strong>回归老账号没有</strong>。</li>
+    </ol>
+  </div></details>
+
+  <h3>第三层：你离开了 1 年以上，或是国服停服前的老玩家</h3>
+  <details name="layer"><summary>以上全部，再加上这些「世界观」变化</summary><div class="inner">
+    <ul class="check">
+      <li>英雄与职责列表以游戏内为准。10 月快照 54 位，比 8 月多 2 位（F12）；OW1 时代之后新增的远不止这些。支援位最近多了两个选择：血律、新黑影。</li>
+      <li>模式：5v5 预设职责是主流（官方 7 月约数：休闲约 54%、竞技约 37%）；6v6 开放职责还在（休闲约 19%、竞技约 8%）；官方未说明分母与窗口，这里只说「参与比例明显低于 5v5」，排队体验自己试（F11）。</li>
+      <li>环境：官方 9-23 自报数字与 11-04 新处罚（F03、F07）。官方说了什么、何时生效，这里只转述。</li>
+      <li>国服已回归运营并持续更新（官网 2026 年窗口内 108 条公告）；国服回归具体日期以官网公告为准 <span class="tag todo">待核验</span>。</li>
+    </ul>
+  </div></details>
+
+  <h3>本命体检表（按英雄查）</h3>
+  <div class="scroll"><table class="tbl stack">
+    <thead><tr><th>你的本命</th><th>发生了什么</th><th>对你意味着</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr><td data-h="本命">黑影</td><td data-h="发生了什么">由输出改为支援（10-07）</td><td data-h="意味着">以前的输出手感不在；按支援思路重学，或换英雄</td><td data-h="来源">F04 <span class="tag official">官方</span></td></tr>
+      <tr><td data-h="本命">路霸</td><td data-h="发生了什么">10-07 重做；11-04 死灵骑士神话皮肤上线</td><td data-h="意味着">技能组变了，先去靶场</td><td data-h="来源">F04、F06 <span class="tag official">官方</span></td></tr>
+      <tr><td data-h="本命">安娜 / 莫伊拉等支援</td><td data-h="发生了什么">11-04 季中平衡补丁有调整；小红书「再见了，所有安娜玩家。」296 条评论</td><td data-h="意味着">具体数值看官网补丁说明；情绪帖不等于不能玩</td><td data-h="来源">F06 <span class="tag official">官方</span>　XHS04 <span class="tag obs">观察</span></td></tr>
+      <tr><td data-h="本命">西格玛</td><td data-h="发生了什么">争霸之战免费线史诗换色皮肤（11-04 至 12-08）</td><td data-h="意味着">要玩：免费线靠游玩和完成挑战推进，推到位才解锁</td><td data-h="来源">F06 <span class="tag official">官方</span></td></tr>
+      <tr><td data-h="本命">末日铁拳 / 斩仇</td><td data-h="发生了什么">争霸之战 1000 金币升级可得传奇皮肤 / 传奇武器</td><td data-h="意味着">先看金币余额再决定</td><td data-h="来源">F06 <span class="tag official">官方</span></td></tr>
+      <tr><td data-h="本命">D.Va / 黑百合 / 弗蕾娅 / 斩仇 / 士兵 76</td><td data-h="发生了什么">伊芙计划联动 11-04 至 11-18</td><td data-h="意味着">限时外观，与进度无关，不买也不影响</td><td data-h="来源">F06 <span class="tag official">官方</span></td></tr>
+      <tr><td data-h="本命">其他英雄</td><td data-h="发生了什么">11-04 季中平衡补丁</td><td data-h="意味着">对照官网补丁说明；不听「史上最削」类标题</td><td data-h="来源">F06 <span class="tag official">官方</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>回归第一周：接上进度的 5 件事（按日期）</h3>
+  <ul class="check">
+    <li><strong>先查任务</strong>争霸之战活动战令（11-04 至 12-08）：免费线靠游玩和完成挑战推进、推到位解锁史诗西格玛皮肤；再决定要不要花 1000 金币升级。</li>
+    <li><strong>再接</strong>往期战令：第 1–9、15 赛季从当年进度继续；每期标志性奖励自己对照，不替你排序。</li>
+    <li><strong>挑时间</strong>：现在就开始玩，不用等；11-21 至 11-24 狂鼠补给狩猎有双倍经验，这四天用来集中补进度。</li>
+    <li><strong>别期待</strong>：新手 60 天礼包是新注册账号的；嘉年华神话代券 10-06 已截止。</li>
+    <li><strong>定目标</strong>：12-04 至 12-08 竞逐；12-02 至 12-06 广州总决赛（下一张卡）。</li>
+  </ul>
+
+  <h3>没看过比赛也能看：12 月广州总决赛观赛卡</h3>
+  <div class="grid-2">
+    <div class="card"><h4>哪天、在哪 <span class="tag official">官方/官媒</span></h4><p>12-02 / 03 演播室阶段；12-04 至 06 广州体育馆 1 号馆（F09）。助威活动 12-03 至 07（官网 11-04 公告）。第三方资讯图写的 11-24 起与官网不一致，以官网为准。</p></div>
+    <div class="card"><h4>先认识谁 <span class="tag todo">待核验</span></h4><p>中国赛区第三赛段 10-03 至 11-08、8 队（F10）。晋级总决赛的中国队与选手名单以官方公布为准；B 站 11-07/08 出现「WBG 零封 AG」等 UGC 标题，只是线索。</p></div>
+    <div class="card"><h4>不懂战术怎么看 <span class="tag infer">推断</span></h4><p>比赛用哪个补丁以赛事公告为准 <span class="tag todo">待核验</span>；看职业选手怎么用血律和新黑影、怎么集火抢目标，不懂战术也看得进去。</p></div>
+    <div class="card"><h4>和谁一起看 <span class="tag obs">观察</span></h4><p>小红书 10-13 有人问「回坑一个月、从没看过比赛，要不要去广州」（95 赞，XHS01）；最有用的回答是一张「先认识谁」清单。线上看：B 站「守望先锋电竞」官方号（40.2 万粉）。</p></div>
+  </div>
+  <p class="small">给朋友的一句话（可复制）：「你以前的战令进度还在，黑影改支援了，11 月 21 日双倍经验，12 月 2 日广州总决赛。回来先看这页。」</p>
+</div></section>
+
+<!-- ============ 为什么 ============ -->
+<section id="why"><div class="wrap">
+  <h2>为什么做回流玩家、为什么选这两个平台</h2>
+  <div class="grid-2">
+    <div class="card"><h4>样本里供给几乎是空的 <span class="tag obs">观察</span></h4>
+      <p>10-15 抓到的 B 站近期 3,760 条视频里，明确面向回归者的 18 条；官方 17 条新手英雄教学全部面向新手；官网窗口内 26 篇新闻无一篇面向回归。11-09 复查：10-07 之后 <b id="n-ow"></b> 条 OW 相关视频里，以回归玩家为题的 <b>0</b> 条。两批都是检索样本，不是平台全量。</p></div>
+    <div class="card"><h4>需求有真实线索 <span class="tag obs">观察</span></h4>
+      <p>小红书「守望先锋回坑」搜索列表保存的 19 条里 8 条在找搭子；「从没看过比赛建议去看 owcs 总决赛吗」95 赞；「为什么觉得 OW 比以前好玩了，是我的错觉吗」47 赞。回流玩家在问：值不值、跟不跟得上、和谁玩。</p></div>
+    <div class="card"><h4>节点刚好 <span class="tag official">官方</span></h4>
+      <p>返场战令（10-07）让「进度没丢」成立；争霸之战（11-04 至 12-08）给了免费目标；双倍经验（11-21 至 24）是集中补进度的窗口；总决赛（12-02 至 06）是 7 周后的终点。</p></div>
+    <div class="card"><h4>三个方向里为什么选它</h4>
+      <p>B「血律/新黑影教学」：官方 17 条教学已覆盖，且需要高水平实操剪辑。C「赛事扩圈」：比赛画面版权不在个人手里，12-06 后失效——它的需求被吸收为本方案的选题三。A 能用图文 + 脚本 + 数据独立完成，并且补的是样本里没人做的那一块。</p></div>
+  </div>
+
+  <h3>三个平台各看到什么（摘要，细节见案例区）</h3>
+  <div class="scroll"><table class="tbl stack">
+    <thead><tr><th>平台</th><th>用户在找什么</th><th>什么形态成立</th><th>评论/收藏/分享怎么发生</th><th>本方案怎么用</th></tr></thead>
+    <tbody>
+      <tr><td data-h="平台"><strong>B 站</strong></td><td data-h="找什么">补丁分析、教学、剧情语音；教学类收藏/播放中位最高（见主题统计）</td><td data-h="形态">8–76 分钟长视频能活；专栏/动态长图可收藏</td><td data-h="互动">热评自发产出「省流版」与具体操作建议（695 / 1226 赞）</td><td data-h="用法">放说明书完整版 + 长图；置顶先给省流</td></tr>
+      <tr><td data-h="平台"><strong>小红书</strong></td><td data-h="找什么">找搭子、问「值不值」、问「什么时候上线」</td><td data-h="形态">一句话 + 一张图成立（「再见了，所有安娜玩家。」278 赞 / 296 评论；完整补丁说明 84 / 55）</td><td data-h="互动">三例评论多于赞（293/381、96/108、278/296）；评论区当问答区与组队区</td><td data-h="用法">按「我的本命怎么了」切；每篇末尾留组队互动位</td></tr>
+      <tr><td data-h="平台"><strong>抖音</strong>（本期不做）</td><td data-h="找什么">「回坑」搜索保存 13 条，以回坑为题的最近两条点赞 62 / 37；高赞是 18 秒梗片与官方皮肤预览</td><td data-h="形态">15–30 秒梗向；官方 PV 1.5 万赞 / 8,714 分享，神话皮 2.4 万赞 / 3.5 万分享</td><td data-h="互动">两条官方案例分享一低一高，不概括；高赞评论是具体问题或梗</td><td data-h="用法">本期不做是资源取舍，不是「不适合」；待验证备选：15 秒梗开头 + 评论区放说明书链接</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">不把平台差异归因于算法；不把某条内容的数据归因于某个标题或剪辑技巧。同一作者「卡破伏岓」同主题补丁分析：B 站 543 评论 / 175 收藏，抖音 93 评论 / 210 分享——只记录，不归因。</p>
+</div></section>
+
+<!-- ============ 方案 ============ -->
+<section id="plan"><div class="wrap">
+  <h2>内容方案：3 个选题 × 2 个平台 × 7 周</h2>
+  <div class="scroll"><table class="tbl stack">
+    <thead><tr><th>选题</th><th>回答哪个问题</th><th>B 站</th><th>小红书</th><th>发布锚点</th></tr></thead>
+    <tbody>
+      <tr><td data-h="选题"><strong>一、离开 N 个月，守望变了这 7 件事</strong></td><td data-h="问题">变了什么、我的本命还能玩吗</td><td data-h="B站">5–6 分钟分层解说 + 专栏长图</td><td data-h="小红书">7 图「本命体检表」+ 评论区按离开时长答疑（<strong>七图文字已排版</strong>，见页首）</td><td data-h="锚点">W1 · 11-10 周</td></tr>
+      <tr><td data-h="选题"><strong>二、回归第一周接上进度清单</strong></td><td data-h="问题">能领什么、先玩什么</td><td data-h="B站">3 分钟「先查任务条件，再安排双倍经验」+ 置顶省流</td><td data-h="小红书">5 件事清单图文 + 「段位 + 时段」组队位</td><td data-h="锚点">W2 · 11-21 双倍经验前</td></tr>
+      <tr><td data-h="选题"><strong>三、没看过比赛的回归玩家，广州总决赛看什么</strong></td><td data-h="问题">和谁一起看、看什么</td><td data-h="B站">90 秒「先认识这几个名字」+ 赛程日历长图</td><td data-h="小红书">问答帖：回坑一个月去不去广州？5 问 5 答</td><td data-h="锚点">W3–W4 · 12-02 前</td></tr>
+    </tbody>
+  </table></div>
+  <div class="pill-row"><span class="pill">不新增福利，只把官方已给的分层讲清</span><span class="pill">不替官方背书，环境治理只转述</span><span class="pill">素材 = 自制录屏 + 自制图表 + 官网文字引用</span><span class="pill">不搬运官方视频与他人内容</span><span class="pill">易变事实标待核验</span></div>
+  <h3>排期</h3>
+  <ol class="timeline">
+    <li><time>W1 · 11-10 至 11-16</time>B 站选题一视频 + 专栏 → 隔 1 天小红书本命体检表。补丁情绪期（小红书「再见安娜」296 评论发生在 11-05）。</li>
+    <li><time>W2 · 11-17 至 11-20</time>小红书清单 → B 站返场战令视频。必须在 11-21 双倍经验前发完。</li>
+    <li><time>W3 · 11-24 至 11-30</time>B 站选题三 90 秒 + 日历。总决赛前一周。</li>
+    <li><time>W4 · 12-01</time>小红书问答帖。开赛前一天。</li>
+    <li><time>W5–W7（可选）· 12-08 至 12-28</time>复盘与 FAQ 更新；按验证结果决定是否续作。争霸之战与竞逐 12-08 结束。</li>
+  </ol>
+</div></section>
+
+<!-- ============ 样稿 ============ -->
+<section id="samples"><div class="wrap">
+  <h2>样稿（未发布；选题一小红书版已排成七图文字，其余为草稿）</h2>
+  <p class="small">完整 6 份与七图文字见《03_跨平台内容样稿.docx》。这里放每份的标题、封面文案与开头，以及两版为什么不同。</p>
+
+  <details name="s"><summary>选题一 · B 站版｜离开 3 个月 / 1 年 / 3 年的守望玩家，回来先看这 7 件事</summary><div class="inner">
+    <p><strong>封面</strong>：大字「你离开多久了？」小字「3 个月｜1 年｜OW1 老玩家，各看各的」；用自己的英雄选择界面截图。</p>
+    <p><strong>开头 0–20 秒</strong>：「如果你是黑影玩家，先别急着进游戏——黑影现在是支援。这期按你离开多久来讲，三条线，各看各的，不用全看。」</p>
+    <p><strong>结构</strong>：三层各 1–1.5 分钟，章节分段；收尾引导专栏长图与置顶省流。<strong>素材</strong>：自制录屏（战令页、英雄选择页、黑影技能面板、6v6 排队）、自制三层表。<strong>互动</strong>：置顶省流 + 固定问题「你离开了多久？第一个想玩谁？」</p>
+  </div></details>
+  <details name="s"><summary>选题一 · 小红书版｜回坑先查本命｜黑影玩家注意</summary><div class="inner">
+    <p><strong>封面</strong>：「你的本命还能玩吗？」+ 手写风体检表缩略。<strong>开头</strong>：「先想想你最后一次玩是哪个赛季。先找你的本命，再决定要不要回来。」</p>
+    <p><strong>正文</strong>：7 图 = 7 件事，每图一个事实 + 一句「对你意味着什么」；正文 150 字内。<strong>互动</strong>：末句固定「评论区写你离开多久 + 本命，我按人回」，按可投入时间回复、先回有具体卡点的。完整七图文字见页首。</p>
+    <p><strong>为什么不同</strong>：B 站给全量、分层、有章节；小红书上同一节点「一句话 + 一个英雄」的讨论量远高于完整补丁说明，所以只讲「我的本命怎么了」，分层放进评论区按人答。</p>
+  </div></details>
+  <details name="s"><summary>选题二 · B 站版｜回归第一周先做什么：先查任务条件，再安排双倍经验</summary><div class="inner">
+    <p><strong>封面</strong>：「先查任务 再排时间」+ 争霸之战页面自截图。<strong>开头 0–15 秒</strong>：「回来第一件事不是上分，是看清免费奖励的条件和截止日。三分钟，五件事，按日期排。」</p>
+    <p><strong>互动</strong>：置顶 = 5 件事纯文本可复制清单；11-25 双倍经验结束后更新置顶写「已结束」。<strong>验证</strong>：先试读，发布后以本账号基线定目标（见验证方案）。</p>
+  </div></details>
+  <details name="s"><summary>选题二 · 小红书版｜回坑第一周｜先领再肝 5 件事</summary><div class="inner">
+    <p><strong>封面</strong>：「先查任务 再排时间」+ 勾选框清单缩略。<strong>正文</strong>：5 图对应 5 件事，每图「日期 / 动作 / 不适用的人」；第 4 图单独写「回归老账号没有新手礼包」。</p>
+    <p><strong>互动</strong>：组队互动位「留下段位 + 常在线时段，想一起肝双倍经验的互相回复」。<strong>验证</strong>：见验证方案，不预设留言数。</p>
+    <p><strong>为什么不同</strong>：B 站版多「值不值」的判断标准与进度查看路径；小红书版压成可收藏清单并接上「和谁玩」——小红书上观察到的一类明显需求线索，B 站评论区几乎不出现找搭子。</p>
+  </div></details>
+  <details name="s"><summary>选题三 · B 站版｜回坑一个月也能看懂总决赛：12 月广州，先记住这几个名字</summary><div class="inner">
+    <p><strong>开头 0–10 秒</strong>：「不需要懂战术。一分半，告诉你 12 月该认识谁、哪天看。」<strong>素材</strong>：自制日历长图、自己的对局录屏（标注录制日期与版本，不声称与赛事补丁相同）；<strong>不使用任何比赛画面</strong>。队伍名单 <span class="tag todo">待核验</span> 占位。</p>
+  </div></details>
+  <details name="s"><summary>选题三 · 小红书版｜回坑一个月，去不去广州看总决赛</summary><div class="inner">
+    <p><strong>开头</strong>：「上个月有人问了这个问题，95 个赞。我把答案整理成 5 问 5 答。」（引用提问事实，不复制原帖）</p>
+    <p><strong>5 问</strong>：哪几天在哪 / 先认识谁（待核验）/ 不会战术能看懂吗 / 怎么线上看 / 现场与 cos 规则去哪查（主办方公告，不替答）。<strong>互动</strong>：同城互认「留下城市，广州的互相认识」。</p>
+    <p><strong>为什么不同</strong>：B 站版重「怎么看」；小红书版重「去不去」与同城互认，因为原始需求来自小红书提问帖，且小红书评论区承担社交功能。</p>
+  </div></details>
+</div></section>
+
+<!-- ============ 案例 ============ -->
+<section id="cases"><div class="wrap">
+  <h2>真实案例：三平台可见数据</h2>
+  <p class="small">观察日期 <span id="obs"></span>。B 站：公开搜索接口匿名读取；抖音、小红书：本人登录态人工逐条观察。全部是检索样本，不是全量；只用来判断内容形态，不推断平台总体。完整表见《02_真实案例分析表.xlsx》。</p>
+
+  <h3>判断依据 → 对设计的影响</h3>
+  <div class="scroll" id="judgements"></div>
+
+  <h3>B 站：10-07 之后 OW 相关样本按主题</h3>
+  <div class="scroll" id="themes"></div>
+  <details><summary>B 站样本播放 TOP 40（标题含链接）</summary><div class="inner scroll" id="btop"></div></details>
+  <details><summary>B 站热评（16 条视频 × 首页前 3 条）</summary><div class="inner scroll" id="bcomments"></div></details>
+
+  <h3>抖音：逐条观察</h3>
+  <div class="scroll" id="douyin"></div>
+  <details><summary>抖音搜索「守望先锋 回坑」列表（相对时间为页面显示）</summary><div class="inner scroll" id="dylist"></div></details>
+
+  <h3>小红书：逐条观察</h3>
+  <div class="scroll" id="xhs"></div>
+  <details><summary>小红书三组搜索列表</summary><div class="inner" id="xhslist"></div></details>
+
+  <h3>观察限制</h3>
+  <ul id="limits"></ul>
+</div></section>
+
+<!-- ============ 验证 ============ -->
+<section id="verify"><div class="wrap">
+  <h2>验证方案 <span class="tag verify">全部待验证</span></h2>
+  <p>本项目未发布。验证分两步：先回答「回归者能不能用它接上进度」（发布前就能做），再回答「发出去有没有人看」。没有任何已采到的数值；阈值在本账号有基线之后再定，不预设硬指标。</p>
+  <div class="scroll"><table class="tbl stack">
+    <thead><tr><th>步骤</th><th>要回答什么</th><th>怎么做</th><th>结果怎么用</th></tr></thead>
+    <tbody>
+      <tr><td data-h="步骤"><strong>① 试读（发布前）</strong></td><td data-h="问题">说明书能不能让人接上进度</td><td data-h="做法">找 3–5 位符合条件的玩家（离开 3 个月以上、最近想回来）独立读七图样张与第一周清单，各完成三项任务：找到自己本命的变化、说出争霸之战免费皮肤的获得条件、安排好第一局玩什么。记录找不到、理解错、放弃的地方</td><td data-h="用法">任一任务有 2 人以上出错：改内容与顺序，再试读一轮。三项都过，才进入发布</td></tr>
+      <tr><td data-h="步骤"><strong>② 筛对人了吗</strong></td><td data-h="问题">看的人是不是回归者</td><td data-h="做法">发布后 7 天人工标注前 100 条评论里含回归信号（回坑 / 回归 / 多久没玩 / 以前）的比例</td><td data-h="用法">与 10-15 研究 450 条泛样本的 2.4% 对比看方向；明显不高于泛样本：改标题与封面，不改内容</td></tr>
+      <tr><td data-h="步骤"><strong>③ 讲清了吗</strong></td><td data-h="问题">有没有人把它存下来、看下去</td><td data-h="做法">B 站 30 秒留存与平均观看时长（创作者后台）、小红书收藏数；7 天与 30 天各记一次</td><td data-h="用法">只与本账号自己的几篇互比，建立基线；本账号后台数据不与他人公开计数直接比较</td></tr>
+      <tr><td data-h="步骤"><strong>④ 接住需求了吗</strong></td><td data-h="问题">评论区是不是被当问答区和组队区用</td><td data-h="做法">每周数评论提问数、作者回复数、组队互动位含「段位 + 时段」的留言数</td><td data-h="用法">连续两篇几乎没有：互动位设计无效，换成固定的「帮你配队」评论模板。组队留言多不等于回归成功，只说明互动位被用了</td></tr>
+      <tr><td data-h="步骤"><strong>⑤ 节点踩准了吗</strong></td><td data-h="问题">排期有没有执行</td><td data-h="做法">选题二在 11-21 前、选题三在 12-02 前是否发出</td><td data-h="用法">错过锚点顺延到下一节点，不硬发</td></tr>
+      <tr><td data-h="步骤"><strong>停止条件</strong></td><td data-h="问题">什么时候不再做</td><td data-h="做法">两轮迭代后试读仍有任务过不去，或发布后两篇都没有回归者评论</td><td data-h="用法">停更该选题，写复盘</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">若在官方侧可测（本项目不可测）：北极星应是「回流后 7 天内接上进度的回归账号数」，分母 = 连续 90 天以上未登录后再登录；护栏 = 首周中途退出率、14 天再流失率。写出来是为了说明内容指标如何对齐业务指标，不是声称测过。</div>
+</div></section>
+
+<!-- ============ 事实 ============ -->
+<section id="facts"><div class="wrap">
+  <h2>事实与来源</h2>
+  <div class="scroll" id="facts-tbl"></div>
+  <h3>开源评审结论</h3>
+  <p>检索并评审 12 个仓库（含已被 B 站律师函关停的两个）。结论：<strong>不引入任何评审仓库的代码</strong>——两个公开接口一百来行 requests 脚本已够，第三方库只有 requests 与 openpyxl；48 条热评人工归类，没有和主题模型比过准确率；本期不产视频成片，无需转写。参考了 Beav 的内容日历字段与 claude-repurpose 的「平台约束 → 改写」结构。B 站读取限定为公开页可见数据、低频、只读、不再分发原始数据、不存用户 ID（首版曾保存 UP 主 mid，11-09 已删除）。</p>
+  <h3>事实纪律</h3>
+  <ul>
+    <li>未发布、无运营数据、无访谈；不写「已运营」「已增长」。</li>
+    <li>样稿 = 草稿（七图文字已排版，仍未发布、未试读）；案例表 = 真实观测；验证方案没有任何已采到的数值。</li>
+    <li>抖音、小红书搜索列表只保存了记录到的条目（13 条、19 条），占比以保存条目为分母。</li>
+    <li>他人内容只作研究引用并标注作者；样稿为原创。</li>
+    <li>需要登录、付费、上传或公开发布的动作均未执行；若要发布，先说明操作再等授权。</li>
+  </ul>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <p>《守望先锋》回坑说明书 · 马准名 · 作品集项目 · 2026-11-09 · 数据与文档：D:\ow-content-playbook（research / deliverables / site）。页面为单文件 HTML，离线可用，Ctrl+P 可打印为手册。</p>
+</div></footer>
+
+<script id="data" type="application/json">{
+ "observed_at": "2026-11-09",
+ "bilibili": {
+  "n_total": 339,
+  "n_recent": 243,
+  "n_ow": 215,
+  "themes": [
+   {
+    "theme": "其他/整活",
+    "n": 79,
+    "median_play": 8883,
+    "median_like_rate": 0.0247,
+    "median_fav_rate": 0.0046,
+    "median_reply_rate": 0.0038
+   },
+   {
+    "theme": "新英雄/重做",
+    "n": 37,
+    "median_play": 3690,
+    "median_like_rate": 0.0199,
+    "median_fav_rate": 0.0034,
+    "median_reply_rate": 0.0042
+   },
+   {
+    "theme": "外观/战令/联动",
+    "n": 28,
+    "median_play": 18097,
+    "median_like_rate": 0.0154,
+    "median_fav_rate": 0.0028,
+    "median_reply_rate": 0.003
+   },
+   {
+    "theme": "版本/补丁",
+    "n": 19,
+    "median_play": 25500,
+    "median_like_rate": 0.0156,
+    "median_fav_rate": 0.002,
+    "median_reply_rate": 0.007
+   },
+   {
+    "theme": "环境治理/主播事件",
+    "n": 18,
+    "median_play": 34562,
+    "median_like_rate": 0.0159,
+    "median_fav_rate": 0.0015,
+    "median_reply_rate": 0.0098
+   },
+   {
+    "theme": "新手/教学",
+    "n": 16,
+    "median_play": 13917,
+    "median_like_rate": 0.0333,
+    "median_fav_rate": 0.0094,
+    "median_reply_rate": 0.0046
+   },
+   {
+    "theme": "赛事",
+    "n": 12,
+    "median_play": 4316,
+    "median_like_rate": 0.0167,
+    "median_fav_rate": 0.0021,
+    "median_reply_rate": 0.0053
+   },
+   {
+    "theme": "剧情/语音",
+    "n": 5,
+    "median_play": 49151,
+    "median_like_rate": 0.0331,
+    "median_fav_rate": 0.0046,
+    "median_reply_rate": 0.01
+   },
+   {
+    "theme": "回归/老玩家",
+    "n": 1,
+    "median_play": 281,
+    "median_like_rate": 0.0,
+    "median_fav_rate": 0.0,
+    "median_reply_rate": 0.0142
+   }
+  ],
+  "top": [
+   {
+    "pubdate_bjt": "2026-10-31",
+    "theme": "其他/整活",
+    "title": "👆😭A点一个铠之巨人",
+    "author": "久子鸽",
+    "duration": "5:51",
+    "play": 371730,
+    "like": 19933,
+    "favorites": 3668,
+    "review": 553,
+    "url": "https://www.bilibili.com/video/BV1zxxv6YEPr"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "外观/战令/联动",
+    "title": "《守望先锋》《剑星》联动 黑百合 伊芙皮肤展示",
+    "author": "游民星空官方",
+    "duration": "0:51",
+    "play": 349973,
+    "like": 27698,
+    "favorites": 4906,
+    "review": 1274,
+    "url": "https://www.bilibili.com/video/BV1SXxD6FED1"
+   },
+   {
+    "pubdate_bjt": "2026-11-03",
+    "theme": "其他/整活",
+    "title": "还有没有新一点的ID？",
+    "author": "守望先锋月下茗",
+    "duration": "0:21",
+    "play": 295127,
+    "like": 7447,
+    "favorites": 1674,
+    "review": 815,
+    "url": "https://www.bilibili.com/video/BV1ED4M6sEAr"
+   },
+   {
+    "pubdate_bjt": "2026-10-20",
+    "theme": "其他/整活",
+    "title": "✋🌸根本没有这种英雄",
+    "author": "久子鸽",
+    "duration": "4:17",
+    "play": 212811,
+    "like": 9890,
+    "favorites": 985,
+    "review": 397,
+    "url": "https://www.bilibili.com/video/BV1HeJf6XEcr"
+   },
+   {
+    "pubdate_bjt": "2026-10-23",
+    "theme": "其他/整活",
+    "title": "【离开Leave】💃馨爱（思冯版）💃",
+    "author": "Linzer_",
+    "duration": "2:10",
+    "play": 199882,
+    "like": 11932,
+    "favorites": 3453,
+    "review": 732,
+    "url": "https://www.bilibili.com/video/BV1c1nx6cEFj"
+   },
+   {
+    "pubdate_bjt": "2026-10-30",
+    "theme": "剧情/语音",
+    "title": "《守望先锋》动画短片 |《狼口夺食》",
+    "author": "守望先锋",
+    "duration": "5:19",
+    "play": 198872,
+    "like": 6581,
+    "favorites": 1004,
+    "review": 2717,
+    "url": "https://www.bilibili.com/video/BV1yDxY6qEXh"
+   },
+   {
+    "pubdate_bjt": "2026-10-25",
+    "theme": "其他/整活",
+    "title": "守望先锋【午时已到】第72期：最伟大的新模式！",
+    "author": "天天卡牌",
+    "duration": "6:50",
+    "play": 186228,
+    "like": 10168,
+    "favorites": 1117,
+    "review": 382,
+    "url": "https://www.bilibili.com/video/BV1VKnb6sE6L"
+   },
+   {
+    "pubdate_bjt": "2026-10-24",
+    "theme": "其他/整活",
+    "title": "盘点那些守望先锋权威id|神也会忧郁",
+    "author": "比奇堡大侠mvm",
+    "duration": "0:33",
+    "play": 178238,
+    "like": 5259,
+    "favorites": 927,
+    "review": 439,
+    "url": "https://www.bilibili.com/video/BV1pxHA6BEz6"
+   },
+   {
+    "pubdate_bjt": "2026-10-09",
+    "theme": "新手/教学",
+    "title": "《守望先锋》新手英雄教学-温斯顿",
+    "author": "守望先锋",
+    "duration": "2:15",
+    "play": 176424,
+    "like": 5961,
+    "favorites": 542,
+    "review": 804,
+    "url": "https://www.bilibili.com/video/BV1Cdpx6gEpY"
+   },
+   {
+    "pubdate_bjt": "2026-10-08",
+    "theme": "外观/战令/联动",
+    "title": "复合吧  之前不知道你这么会做神话皮",
+    "author": "脑西有污",
+    "duration": "1:49",
+    "play": 174540,
+    "like": 2297,
+    "favorites": 302,
+    "review": 356,
+    "url": "https://www.bilibili.com/video/BV1RaHQ6ZET9"
+   },
+   {
+    "pubdate_bjt": "2026-10-08",
+    "theme": "新手/教学",
+    "title": "《守望先锋》新手英雄教学-卡西迪",
+    "author": "守望先锋",
+    "duration": "2:7",
+    "play": 139521,
+    "like": 4919,
+    "favorites": 324,
+    "review": 830,
+    "url": "https://www.bilibili.com/video/BV1C3HQ6GE9J"
+   },
+   {
+    "pubdate_bjt": "2026-10-07",
+    "theme": "新英雄/重做",
+    "title": "【S5赛季初】居然有黑影也讨厌的老头？莫伊拉血律互相看不上 血律互动语音合集",
+    "author": "逍遥神州",
+    "duration": "5:48",
+    "play": 136752,
+    "like": 3505,
+    "favorites": 549,
+    "review": 651,
+    "url": "https://www.bilibili.com/video/BV1BXpK66Ek1"
+   },
+   {
+    "pubdate_bjt": "2026-10-26",
+    "theme": "外观/战令/联动",
+    "title": "拼好皮 | 黑百合联动皮伊芙",
+    "author": "Sleep°",
+    "duration": "1:2",
+    "play": 133345,
+    "like": 1078,
+    "favorites": 181,
+    "review": 251,
+    "url": "https://www.bilibili.com/video/BV1nVnR6yEkC"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "外观/战令/联动",
+    "title": "剑星联动的特写好帅啊！",
+    "author": "Sleep°",
+    "duration": "1:31",
+    "play": 125373,
+    "like": 980,
+    "favorites": 208,
+    "review": 161,
+    "url": "https://www.bilibili.com/video/BV1tXxU6HEyg"
+   },
+   {
+    "pubdate_bjt": "2026-11-06",
+    "theme": "环境治理/主播事件",
+    "title": "【封号时刻】ow主播在严打时代遭遇打击时 部分反应合集（更新了两个主播反应）",
+    "author": "HEROkkkkkkkk",
+    "duration": "6:45",
+    "play": 124285,
+    "like": 3662,
+    "favorites": 1171,
+    "review": 2170,
+    "url": "https://www.bilibili.com/video/BV1R54h67ELN"
+   },
+   {
+    "pubdate_bjt": "2026-10-24",
+    "theme": "其他/整活",
+    "title": "什么叫点里有个重生室",
+    "author": "有点脑子但不多w",
+    "duration": "3:0",
+    "play": 115416,
+    "like": 2737,
+    "favorites": 460,
+    "review": 420,
+    "url": "https://www.bilibili.com/video/BV11CHw6TEMj"
+   },
+   {
+    "pubdate_bjt": "2026-10-18",
+    "theme": "其他/整活",
+    "title": "教你在OW一键识人，不走弯路",
+    "author": "小霜请你吃颗糖",
+    "duration": "0:49",
+    "play": 114393,
+    "like": 4858,
+    "favorites": 570,
+    "review": 923,
+    "url": "https://www.bilibili.com/video/BV1aYnu6PEFo"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "版本/补丁",
+    "title": "赛季中补丁来袭，死神回调300血，飞天猫砍成猫条",
+    "author": "Akan阿坎",
+    "duration": "3:1",
+    "play": 105130,
+    "like": 1288,
+    "favorites": 162,
+    "review": 1020,
+    "url": "https://www.bilibili.com/video/BV11Vx26gEN6"
+   },
+   {
+    "pubdate_bjt": "2026-10-22",
+    "theme": "其他/整活",
+    "title": "守望先锋天使加入K/DA",
+    "author": "ch1chi_",
+    "duration": "1:33",
+    "play": 96683,
+    "like": 3443,
+    "favorites": 469,
+    "review": 226,
+    "url": "https://www.bilibili.com/video/BV1kFn26HEwT"
+   },
+   {
+    "pubdate_bjt": "2026-11-05",
+    "theme": "版本/补丁",
+    "title": "守望先锋最粗暴的改动！直接给破坏球限速！",
+    "author": "哈蒙德大人",
+    "duration": "3:19",
+    "play": 96336,
+    "like": 2939,
+    "favorites": 376,
+    "review": 868,
+    "url": "https://www.bilibili.com/video/BV1L34b6kEb4"
+   },
+   {
+    "pubdate_bjt": "2026-11-05",
+    "theme": "环境治理/主播事件",
+    "title": "【卜天才】情系无糖可乐跟卜区爆了，怒发1000元SC斥责卜区的行为！",
+    "author": "布丁拌饭w",
+    "duration": "1:15",
+    "play": 95500,
+    "like": 525,
+    "favorites": 151,
+    "review": 971,
+    "url": "https://www.bilibili.com/video/BV1CYxR6bELY"
+   },
+   {
+    "pubdate_bjt": "2026-11-02",
+    "theme": "其他/整活",
+    "title": "[原始暴怒]现在始终激活！始终激活啊啊啊啊！！！",
+    "author": "梦想家小瓜子",
+    "duration": "4:10",
+    "play": 94778,
+    "like": 1654,
+    "favorites": 143,
+    "review": 279,
+    "url": "https://www.bilibili.com/video/BV1Yvxy67EnD"
+   },
+   {
+    "pubdate_bjt": "2026-10-20",
+    "theme": "其他/整活",
+    "title": "有没有比安娜更累的英雄？有的兄弟，有的！",
+    "author": "鬼鬼goghost",
+    "duration": "9:23",
+    "play": 92050,
+    "like": 1560,
+    "favorites": 108,
+    "review": 745,
+    "url": "https://www.bilibili.com/video/BV1ZHnF6SEsW"
+   },
+   {
+    "pubdate_bjt": "2026-11-02",
+    "theme": "其他/整活",
+    "title": "我能o转瓦 你不能瓦转o",
+    "author": "浅夏阿帕茶",
+    "duration": "0:40",
+    "play": 86266,
+    "like": 3839,
+    "favorites": 715,
+    "review": 392,
+    "url": "https://www.bilibili.com/video/BV1vc4w6eEMy"
+   },
+   {
+    "pubdate_bjt": "2026-10-23",
+    "theme": "其他/整活",
+    "title": "【美咖中字】JJonak：中国孩子们都是些什么id啊（nice sunzo～）",
+    "author": "美咖软糖",
+    "duration": "16:45",
+    "play": 85938,
+    "like": 1947,
+    "favorites": 522,
+    "review": 283,
+    "url": "https://www.bilibili.com/video/BV1fFnh6KEMj"
+   },
+   {
+    "pubdate_bjt": "2026-11-05",
+    "theme": "环境治理/主播事件",
+    "title": "守望先锋严打陪玩代练！头部铁拳主播  某某电竞头牌被封号加永久禁赛",
+    "author": "我真的的是巴蒂",
+    "duration": "0:20",
+    "play": 85691,
+    "like": 812,
+    "favorites": 80,
+    "review": 271,
+    "url": "https://www.bilibili.com/video/BV1ho446AEcc"
+   },
+   {
+    "pubdate_bjt": "2026-11-07",
+    "theme": "环境治理/主播事件",
+    "title": "真封号！守望先锋进入严打炸鱼/代练/宣传陪玩店等一系列灰产项目时期！某音大量炸鱼主播已被制裁！【守望先锋】",
+    "author": "阿北今天也好困",
+    "duration": "3:8",
+    "play": 84641,
+    "like": 2582,
+    "favorites": 172,
+    "review": 971,
+    "url": "https://www.bilibili.com/video/BV1nF476nEaU"
+   },
+   {
+    "pubdate_bjt": "2026-10-07",
+    "theme": "版本/补丁",
+    "title": "黑影路霸重做正式上线！技能改动一览",
+    "author": "残惜暮雪",
+    "duration": "7:53",
+    "play": 84231,
+    "like": 790,
+    "favorites": 99,
+    "review": 404,
+    "url": "https://www.bilibili.com/video/BV1HnpN6CEhg"
+   },
+   {
+    "pubdate_bjt": "2026-11-06",
+    "theme": "剧情/语音",
+    "title": "《守望先锋》故事时间《震后余波》",
+    "author": "守望先锋",
+    "duration": "6:9",
+    "play": 82601,
+    "like": 2772,
+    "favorites": 441,
+    "review": 828,
+    "url": "https://www.bilibili.com/video/BV1eY486jEmM"
+   },
+   {
+    "pubdate_bjt": "2026-11-01",
+    "theme": "新英雄/重做",
+    "title": "一个没有短板的完美英雄——血律",
+    "author": "鬼鬼goghost",
+    "duration": "76:9",
+    "play": 80989,
+    "like": 2161,
+    "favorites": 808,
+    "review": 269,
+    "url": "https://www.bilibili.com/video/BV1QJxs6dEyC"
+   },
+   {
+    "pubdate_bjt": "2026-11-08",
+    "theme": "其他/整活",
+    "title": "守望先锋【午时已到】第73期：大猴马上到！",
+    "author": "天天卡牌",
+    "duration": "6:40",
+    "play": 75648,
+    "like": 5109,
+    "favorites": 512,
+    "review": 99,
+    "url": "https://www.bilibili.com/video/BV1Ai4B67EuQ"
+   },
+   {
+    "pubdate_bjt": "2026-10-20",
+    "theme": "其他/整活",
+    "title": "【守望先锋】2026 S5赛季不同分段英雄强度排名",
+    "author": "卡破伏岓",
+    "duration": "15:33",
+    "play": 75638,
+    "like": 1819,
+    "favorites": 508,
+    "review": 678,
+    "url": "https://www.bilibili.com/video/BV1v9nA6xEkb"
+   },
+   {
+    "pubdate_bjt": "2026-10-16",
+    "theme": "其他/整活",
+    "title": "盘点那些守望先锋权威id 古早id篇",
+    "author": "比奇堡大侠mvm",
+    "duration": "0:34",
+    "play": 74168,
+    "like": 1833,
+    "favorites": 356,
+    "review": 70,
+    "url": "https://www.bilibili.com/video/BV19EJ96tEiN"
+   },
+   {
+    "pubdate_bjt": "2026-10-23",
+    "theme": "环境治理/主播事件",
+    "title": "快给主播爽死了！强度离谱爆表！最好玩的奥丽莎异能",
+    "author": "梦想家小瓜子",
+    "duration": "4:53",
+    "play": 68130,
+    "like": 1169,
+    "favorites": 103,
+    "review": 277,
+    "url": "https://www.bilibili.com/video/BV16inH6SESL"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "外观/战令/联动",
+    "title": "以防你不知道DVA新皮肤可以一边扔核爆一边喝饮料",
+    "author": "MINSEA最小的海",
+    "duration": "2:37",
+    "play": 60481,
+    "like": 832,
+    "favorites": 57,
+    "review": 159,
+    "url": "https://www.bilibili.com/video/BV1CJx26KEyp"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "外观/战令/联动",
+    "title": "【剑星联动】黑百合“伊芙&quot;靶场演示",
+    "author": "绿色忍者Kiriko",
+    "duration": "2:58",
+    "play": 60073,
+    "like": 264,
+    "favorites": 170,
+    "review": 90,
+    "url": "https://www.bilibili.com/video/BV1hcx26JE2c"
+   },
+   {
+    "pubdate_bjt": "2026-10-27",
+    "theme": "其他/整活",
+    "title": "时间会证明狱卒流",
+    "author": "鸭皮_",
+    "duration": "3:42",
+    "play": 59751,
+    "like": 1593,
+    "favorites": 105,
+    "review": 46,
+    "url": "https://www.bilibili.com/video/BV1ySxM6wEWZ"
+   },
+   {
+    "pubdate_bjt": "2026-10-13",
+    "theme": "新英雄/重做",
+    "title": "【守望先锋】迎接你的救赎！血律大招语音13语对比",
+    "author": "爱玩游戏的小橘",
+    "duration": "1:36",
+    "play": 59671,
+    "like": 2084,
+    "favorites": 351,
+    "review": 252,
+    "url": "https://www.bilibili.com/video/BV16EpZ6REFY"
+   },
+   {
+    "pubdate_bjt": "2026-10-27",
+    "theme": "其他/整活",
+    "title": "盘点守望先锋献祭流id 队友看见瞬间触发幸福着退让原则",
+    "author": "毛家博士",
+    "duration": "0:18",
+    "play": 57970,
+    "like": 1914,
+    "favorites": 269,
+    "review": 29,
+    "url": "https://www.bilibili.com/video/BV1Jpno6jEAf"
+   },
+   {
+    "pubdate_bjt": "2026-11-04",
+    "theme": "版本/补丁",
+    "title": "守望先锋s5季中补丁靶场演示附解析",
+    "author": "亚肆Ashi",
+    "duration": "8:32",
+    "play": 57701,
+    "like": 1317,
+    "favorites": 208,
+    "review": 458,
+    "url": "https://www.bilibili.com/video/BV11ExU6yEBG"
+   }
+  ],
+  "returning": [
+   {
+    "pubdate_bjt": "2026-10-23",
+    "title": "守望先锋国服周末活动限时回归",
+    "author": "BillionaireKax",
+    "play": 281,
+    "like": 0,
+    "favorites": 0,
+    "review": 4,
+    "url": "https://www.bilibili.com/video/BV1KAn86LENi"
+   }
+  ]
+ },
+ "comments": [
+  {
+   "bvid": "BV1ajYo6eEu8",
+   "video_title": "《越狱》|《守望先锋》血律英雄宣传片",
+   "rank": 1,
+   "comment": "我看这黑爪才是正规组织啊，每次都在执行紧张刺激的任务，守望先锋现在天天这个谈恋爱那个谈恋爱的[2025贝拉的冒险_你看这人][2025贝拉的冒险_你看这人][2025贝拉的冒险_你看这人]",
+   "like": 2329,
+   "rcount": 23,
+   "observed_at": "2026-11-09T00:43:07+08:00"
+  },
+  {
+   "bvid": "BV1ajYo6eEu8",
+   "video_title": "《越狱》|《守望先锋》血律英雄宣传片",
+   "rank": 2,
+   "comment": "让你劫个狱都这么威风，等你装上拳套了是不是连我都敢打了？[无限暖暖_毛线汪汪]",
+   "like": 1618,
+   "rcount": 26,
+   "observed_at": "2026-11-09T00:43:07+08:00"
+  },
+  {
+   "bvid": "BV1ajYo6eEu8",
+   "video_title": "《越狱》|《守望先锋》血律英雄宣传片",
+   "rank": 3,
+   "comment": "(｀・ω・´)",
+   "like": 1656,
+   "rcount": 24,
+   "observed_at": "2026-11-09T00:43:07+08:00"
+  },
+  {
+   "bvid": "BV1hE5RzfE2D",
+   "video_title": "《守望先锋穷哥们》10-14战令自选优先级",
+   "rank": 1,
+   "comment": "建议选14赛季的，因为有“啊啊，你闯进了我的心”",
+   "like": 1226,
+   "rcount": 34,
+   "observed_at": "2026-11-09T00:43:09+08:00"
+  },
+  {
+   "bvid": "BV1hE5RzfE2D",
+   "video_title": "《守望先锋穷哥们》10-14战令自选优先级",
+   "rank": 2,
+   "comment": "铁拳玩家包选情侣皮的啊",
+   "like": 740,
+   "rcount": 34,
+   "observed_at": "2026-11-09T00:43:09+08:00"
+  },
+  {
+   "bvid": "BV1hE5RzfE2D",
+   "video_title": "《守望先锋穷哥们》10-14战令自选优先级",
+   "rank": 3,
+   "comment": "12 13赛季都好丑，就一个铁拳裸绞哈基米的想要 14赛季好看，尤其是朱诺语音和骇灾特写 10赛季普普通通没啥特色，源氏柜子进村有点搞笑 11赛季假面超人风格有特色但是喜欢的就索杰恩一个，还有那个特写 个人兑换顺序14➡️11➡️10➡️12/13",
+   "like": 487,
+   "rcount": 23,
+   "observed_at": "2026-11-09T00:43:09+08:00"
+  },
+  {
+   "bvid": "BV1erc6ecEW4",
+   "video_title": "守望国服回归，怎么把皮肤都领齐全！补偿这么完美，UP主还有哪些不满意的点？",
+   "rank": 1,
+   "comment": "省流： 奖励分4部分，2/19发放的奖励没有的，建议注销账号然后重登 （1）3-9赛季战令皮肤：每周登录领取，分段发放 （2）1赛季战令全部奖励：开服预约成功，2/19直接发放 （3）2赛季战令奖励（大头，有宙斯神话皮肤）：关注小程序领取，2/19发放 （4）2赛季战令剩余奖励：分两部分，网易大神APP绑定账号领取（有神话皮肤），另一部分加官方微信（小鱿）领取（都是小垃圾） 注：现在网易云也有活动（安娜皮肤），打开APP做任务就行（3分钟就能完成）",
+   "like": 695,
+   "rcount": 21,
+   "observed_at": "2026-11-09T00:43:10+08:00"
+  },
+  {
+   "bvid": "BV1erc6ecEW4",
+   "video_title": "守望国服回归，怎么把皮肤都领齐全！补偿这么完美，UP主还有哪些不满意的点？",
+   "rank": 2,
+   "comment": "真心支持改名机会[星星眼]小时候太唐了改的名字我现在都尬",
+   "like": 416,
+   "rcount": 50,
+   "observed_at": "2026-11-09T00:43:10+08:00"
+  },
+  {
+   "bvid": "BV1erc6ecEW4",
+   "video_title": "守望国服回归，怎么把皮肤都领齐全！补偿这么完美，UP主还有哪些不满意的点？",
+   "rank": 3,
+   "comment": "我就没咋冲过钱，这一回归那不赚大了？",
+   "like": 335,
+   "rcount": 51,
+   "observed_at": "2026-11-09T00:43:10+08:00"
+  },
+  {
+   "bvid": "BV1SXxD6FED1",
+   "video_title": "《守望先锋》《剑星》联动 黑百合 伊芙皮肤展示",
+   "rank": 1,
+   "comment": "还记得当年守望先锋还叫守望屁股[doge]",
+   "like": 63,
+   "rcount": 0,
+   "observed_at": "2026-11-09T00:43:12+08:00"
+  },
+  {
+   "bvid": "BV1SXxD6FED1",
+   "video_title": "《守望先锋》《剑星》联动 黑百合 伊芙皮肤展示",
+   "rank": 2,
+   "comment": "做篇这么赚钱？守望先锋这个标签都出游戏了",
+   "like": 19,
+   "rcount": 0,
+   "observed_at": "2026-11-09T00:43:12+08:00"
+  },
+  {
+   "bvid": "BV1SXxD6FED1",
+   "video_title": "《守望先锋》《剑星》联动 黑百合 伊芙皮肤展示",
+   "rank": 3,
+   "comment": "守望先锋原来是游戏？角色居然还是穿衣服的[惊讶]",
+   "like": 518,
+   "rcount": 18,
+   "observed_at": "2026-11-09T00:43:12+08:00"
+  },
+  {
+   "bvid": "BV141Yd6REpF",
+   "video_title": "守望先锋进入数值大崩坏时代！新英雄“血律”试玩！",
+   "rank": 1,
+   "comment": "暴雪成功解决了雾子大人过于超模的问题：出一个比雾子大人更逆天的奶妈",
+   "like": 1433,
+   "rcount": 93,
+   "observed_at": "2026-11-09T00:43:14+08:00"
+  },
+  {
+   "bvid": "BV141Yd6REpF",
+   "video_title": "守望先锋进入数值大崩坏时代！新英雄“血律”试玩！",
+   "rank": 2,
+   "comment": "哇是高貴的百分比傷害呢，針對哪個職責啊好難猜啊",
+   "like": 791,
+   "rcount": 26,
+   "observed_at": "2026-11-09T00:43:14+08:00"
+  },
+  {
+   "bvid": "BV141Yd6REpF",
+   "video_title": "守望先锋进入数值大崩坏时代！新英雄“血律”试玩！",
+   "rank": 3,
+   "comment": "这机制数值能去漫威先锋演两集",
+   "like": 794,
+   "rcount": 39,
+   "observed_at": "2026-11-09T00:43:14+08:00"
+  },
+  {
+   "bvid": "BV1ck876YEYQ",
+   "video_title": "《守望先锋》新手英雄教学-“死神”",
+   "rank": 1,
+   "comment": "孩子们，我拥有全游戏最超模的大招，开大必死一人",
+   "like": 1442,
+   "rcount": 28,
+   "observed_at": "2026-11-09T00:43:16+08:00"
+  },
+  {
+   "bvid": "BV1ck876YEYQ",
+   "video_title": "《守望先锋》新手英雄教学-“死神”",
+   "rank": 2,
+   "comment": "现在嘲笑幽默扳机的人多半已经几个赛季没玩过游戏了",
+   "like": 1280,
+   "rcount": 66,
+   "observed_at": "2026-11-09T00:43:16+08:00"
+  },
+  {
+   "bvid": "BV1ck876YEYQ",
+   "video_title": "《守望先锋》新手英雄教学-“死神”",
+   "rank": 3,
+   "comment": "经典永流传",
+   "like": 777,
+   "rcount": 12,
+   "observed_at": "2026-11-09T00:43:16+08:00"
+  },
+  {
+   "bvid": "BV1WqVZ6gEHJ",
+   "video_title": "《守望先锋》新手入门教学（2026年）",
+   "rank": 1,
+   "comment": "新手先别打预设模式，直接快乐6v6，6v6纯大乱斗你爱玩什么玩什么，爱怎么玩怎么玩，等你有一定游戏理解和英雄熟练度再打预设，预设很多老登都是很想赢得，而且守望先锋这个预设导致五个人有一个是短板别的四个队友都打的很难受，还有守望先锋的匹配机制完全有可能给你扔进百来小时的老登对局里面，还是那句话没人喜欢输，不要拿着自己是新手当免死金牌去预设和排位练英雄，这不压力你也说不过去，总而言之就是先了通过人机和开6v6了解游戏机制和提升自己熟练度再进入预设和排位，让自己和别人都有比较好的游戏体验[doge][doge]",
+   "like": 771,
+   "rcount": 31,
+   "observed_at": "2026-11-09T00:43:17+08:00"
+  },
+  {
+   "bvid": "BV1WqVZ6gEHJ",
+   "video_title": "《守望先锋》新手入门教学（2026年）",
+   "rank": 2,
+   "comment": "ow玩家疯了，非说现在是16年",
+   "like": 425,
+   "rcount": 11,
+   "observed_at": "2026-11-09T00:43:17+08:00"
+  },
+  {
+   "bvid": "BV1WqVZ6gEHJ",
+   "video_title": "《守望先锋》新手入门教学（2026年）",
+   "rank": 3,
+   "comment": "说实话，暴雪也不顾及新手体验，新手教程就教个wasd移动+鼠标开枪就让人家跑去打实战了",
+   "like": 351,
+   "rcount": 25,
+   "observed_at": "2026-11-09T00:43:17+08:00"
+  },
+  {
+   "bvid": "BV16joCYgEkX",
+   "video_title": "【守望先锋】新手必开的通用设置，帮你快速提升游戏体验！",
+   "rank": 1,
+   "comment": "如果你是皮肤党的话，模型细节一定要开最高。不然钱白花了。",
+   "like": 261,
+   "rcount": 3,
+   "observed_at": "2026-11-09T00:43:19+08:00"
+  },
+  {
+   "bvid": "BV16joCYgEkX",
+   "video_title": "【守望先锋】新手必开的通用设置，帮你快速提升游戏体验！",
+   "rank": 2,
+   "comment": "00:44 这个地方的具体设置是 “模型细节-低” ，除开这块幕布，暴雪世界A点附近也会消失掉不少气球防止干扰视线 其他的设置基本上没有很影响“游戏平衡”的了，基本上就是吃配置 除了这个我都是开的高（保证帧数的前提下），不然为什么玩守望不就是图人物好看特效华丽吗",
+   "like": 287,
+   "rcount": 9,
+   "observed_at": "2026-11-09T00:43:19+08:00"
+  },
+  {
+   "bvid": "BV16joCYgEkX",
+   "video_title": "【守望先锋】新手必开的通用设置，帮你快速提升游戏体验！",
+   "rank": 3,
+   "comment": "低画质低渲染是因为高画质除了模型细节的区别之外还有一些特效和光影效果，比如毛妹的开盾，闪光回溯闪现的涟漪效果，视野里的动画和动作越少越干净，处理信息和视野信息的需求就更少，渲染倍率决定了清晰度，低渲染模型糊看上去轮廓大，但是默认100渲染的话守望的模型清晰度看上去低画质也不会很难看，如果是娱乐玩家的话可以根据自己的喜好调整，想沉浸于竞技变强的玩家还是更建议把画质开低，保持瞄准状态和稳定的高帧数[doge]",
+   "like": 199,
+   "rcount": 3,
+   "observed_at": "2026-11-09T00:43:19+08:00"
+  },
+  {
+   "bvid": "BV1Cdpx6gEpY",
+   "video_title": "《守望先锋》新手英雄教学-温斯顿",
+   "rank": 1,
+   "comment": "我是一个猩猩玩家，每次看见堡垒我就兴奋。因为我的机动性可以随便抓他。但是碰见源氏我逃跑都难，源氏的机动性太强了。完全碾压我",
+   "like": 960,
+   "rcount": 13,
+   "observed_at": "2026-11-09T00:43:21+08:00"
+  },
+  {
+   "bvid": "BV1Cdpx6gEpY",
+   "video_title": "《守望先锋》新手英雄教学-温斯顿",
+   "rank": 2,
+   "comment": "温斯顿游玩基本思路：狂跃，之后用罩。 温斯顿体型庞大：堪忧，这货臃肿。 温斯顿进阶技巧：控跃，择会以战。 温斯顿没有队友帮忙：苦呀，只好驭猪…… 温斯顿抓球：快跃，这货要走 温斯顿抓安娜：哭晕，怎会有针 温斯顿跳后排被黑影抓：靠也，这黑又在 温斯顿被针对：苦也，只好游走 温斯顿对位西格玛：快意，纵横迎战 不小心跳崖的温斯顿：哭晕，怎会跃这 开大续点的温斯顿：狂野，最后一战 温斯顿逮捕源氏:尅源，这还用肘？ 温斯顿看到对面死神:可厌！这货应走 温斯顿打竞逐连跪:哭晕，只会赢猪 温斯顿跳向空中交罩子弹死开大法鸡：狂跃，罩毁鹰炸 温斯顿被铁拳肘击：苦也，遭黑一肘。 用罩子隔到dj大：快意！罩换音障",
+   "like": 1011,
+   "rcount": 9,
+   "observed_at": "2026-11-09T00:43:21+08:00"
+  },
+  {
+   "bvid": "BV1Cdpx6gEpY",
+   "video_title": "《守望先锋》新手英雄教学-温斯顿",
+   "rank": 3,
+   "comment": "一下把我雪神的英雄池都教了，万一以后新玩家学会了让我雪神看饮水机怎么办[生气]",
+   "like": 657,
+   "rcount": 5,
+   "observed_at": "2026-11-09T00:43:21+08:00"
+  },
+  {
+   "bvid": "BV1C3HQ6GE9J",
+   "video_title": "《守望先锋》新手英雄教学-卡西迪",
+   "rank": 1,
+   "comment": "一次补丁毁了飞天午时梦 *S5赛季更新后，神射手期间无法抓住“飞天猫”的救生索",
+   "like": 1981,
+   "rcount": 49,
+   "observed_at": "2026-11-09T00:43:23+08:00"
+  },
+  {
+   "bvid": "BV1C3HQ6GE9J",
+   "video_title": "《守望先锋》新手英雄教学-卡西迪",
+   "rank": 2,
+   "comment": "好帅的英雄",
+   "like": 830,
+   "rcount": 21,
+   "observed_at": "2026-11-09T00:43:23+08:00"
+  },
+  {
+   "bvid": "BV1C3HQ6GE9J",
+   "video_title": "《守望先锋》新手英雄教学-卡西迪",
+   "rank": 3,
+   "comment": "我猜你们没见过小猫骑车[守望先锋十周年表情包_好猫]",
+   "like": 661,
+   "rcount": 8,
+   "observed_at": "2026-11-09T00:43:23+08:00"
+  },
+  {
+   "bvid": "BV1BXpK66Ek1",
+   "video_title": "【S5赛季初】居然有黑影也讨厌的老头？莫伊拉血律互相看不上 血律互动语音合集",
+   "rank": 1,
+   "comment": "血律上来就跟死神说莫姨没医德这句真没绷住，结果没想到死神一句他天使下凡比血律还难绷，新时代高冷搞笑男血律VS旧时代高冷搞笑男死神，有没有懂的[笑哭] 不过莫姨对血律直接哈气可以说是很符合人设了，感觉这俩要是真碰上了，莫姨得八百个看不上血律",
+   "like": 727,
+   "rcount": 19,
+   "observed_at": "2026-11-09T00:43:25+08:00"
+  },
+  {
+   "bvid": "BV1BXpK66Ek1",
+   "video_title": "【S5赛季初】居然有黑影也讨厌的老头？莫伊拉血律互相看不上 血律互动语音合集",
+   "rank": 2,
+   "comment": "哦血律看起来不够老，触发不了黑影的尊老爱幼[笑哭][笑哭][笑哭]",
+   "like": 487,
+   "rcount": 13,
+   "observed_at": "2026-11-09T00:43:25+08:00"
+  },
+  {
+   "bvid": "BV1BXpK66Ek1",
+   "video_title": "【S5赛季初】居然有黑影也讨厌的老头？莫伊拉血律互相看不上 血律互动语音合集",
+   "rank": 3,
+   "comment": "居然没有和你花的对话，还想看到技术大比拼呢[Mygo表情包_让我看看]",
+   "like": 375,
+   "rcount": 39,
+   "observed_at": "2026-11-09T00:43:25+08:00"
+  },
+  {
+   "bvid": "BV1nVnR6yEkC",
+   "video_title": "拼好皮 | 黑百合联动皮伊芙",
+   "rank": 1,
+   "comment": "斩仇的联动是真没一个能看的，太拉了",
+   "like": 11,
+   "rcount": 0,
+   "observed_at": "2026-11-09T00:43:26+08:00"
+  },
+  {
+   "bvid": "BV1nVnR6yEkC",
+   "video_title": "拼好皮 | 黑百合联动皮伊芙",
+   "rank": 2,
+   "comment": "皮肤给黑百合最利好的是3d区",
+   "like": 3,
+   "rcount": 0,
+   "observed_at": "2026-11-09T00:43:26+08:00"
+  },
+  {
+   "bvid": "BV1nVnR6yEkC",
+   "video_title": "拼好皮 | 黑百合联动皮伊芙",
+   "rank": 3,
+   "comment": "到时候模型出来没up弄的好看",
+   "like": 834,
+   "rcount": 12,
+   "observed_at": "2026-11-09T00:43:26+08:00"
+  },
+  {
+   "bvid": "BV18Xb56NEbz",
+   "video_title": "【守望先锋】拓海的新手入坑指南",
+   "rank": 1,
+   "comment": "当年预购了以后开服当天在旅游，借了爸妈的身份证找了个网吧玩了两个小时[呲牙]那是我第一把金左轮",
+   "like": 261,
+   "rcount": 17,
+   "observed_at": "2026-11-09T00:43:28+08:00"
+  },
+  {
+   "bvid": "BV18Xb56NEbz",
+   "video_title": "【守望先锋】拓海的新手入坑指南",
+   "rank": 2,
+   "comment": "我在想，如今劝人入坑ow会下地狱吗[doge]",
+   "like": 243,
+   "rcount": 35,
+   "observed_at": "2026-11-09T00:43:28+08:00"
+  },
+  {
+   "bvid": "BV18Xb56NEbz",
+   "video_title": "【守望先锋】拓海的新手入坑指南",
+   "rank": 3,
+   "comment": "新人入坑必知规则怪谈： 1.跑的慢的是T 2.不要打字说自己是新手，自动减队伍士气还没用。 3.源氏拔刀开e可以挡一切 4.elo是真实存在的，遇到elo牢记第一条。 5.玩游戏要有想象力，每次都尝试不同路线进攻或防守，对面抓你牢记第一条。 6.掩体真能救你，没血了就躲掩体后边。 7.地图选择选推车，推车，推车。",
+   "like": 198,
+   "rcount": 22,
+   "observed_at": "2026-11-09T00:43:28+08:00"
+  },
+  {
+   "bvid": "BV1n4ep6XEyk",
+   "video_title": "守望先锋血律大招喊得什么？津巴布韦吸血鬼？",
+   "rank": 1,
+   "comment": "中配太平淡了，英配英语那句就很好，不过绍纳语这句我个人觉得有点用力过猛",
+   "like": 450,
+   "rcount": 76,
+   "observed_at": "2026-11-09T00:43:30+08:00"
+  },
+  {
+   "bvid": "BV1n4ep6XEyk",
+   "video_title": "守望先锋血律大招喊得什么？津巴布韦吸血鬼？",
+   "rank": 2,
+   "comment": "懂了，意思是你的结局由我掌握，那么… 枯萎凋零🫴🟣 尝尝毒药的滋味🫴🟣 悲剧即将降临🫴🟣 痛苦在所难免🫴🟣 毁灭之力🫴🟣 屈服于我的意志吧！😈🫸🧬 屈服于我！😈🫸🧬 哈哈哈！我的力量倾泻而出！😈🫸🧬",
+   "like": 281,
+   "rcount": 4,
+   "observed_at": "2026-11-09T00:43:30+08:00"
+  },
+  {
+   "bvid": "BV1n4ep6XEyk",
+   "video_title": "守望先锋血律大招喊得什么？津巴布韦吸血鬼？",
+   "rank": 3,
+   "comment": "这个大招语音像大爷一样沿用原配不就得了[笑哭]这么偏的语言还又长又不好读，想要读出气势就更难了[笑哭]不懂",
+   "like": 175,
+   "rcount": 7,
+   "observed_at": "2026-11-09T00:43:30+08:00"
+  },
+  {
+   "bvid": "BV1Uu4y117JA",
+   "video_title": "新手玩家第一把打完就卸载了游戏",
+   "rank": 1,
+   "comment": "差评早就刷了大家放心[滑稽]",
+   "like": 153,
+   "rcount": 12,
+   "observed_at": "2026-11-09T00:43:32+08:00"
+  },
+  {
+   "bvid": "BV1Uu4y117JA",
+   "video_title": "新手玩家第一把打完就卸载了游戏",
+   "rank": 2,
+   "comment": "有没有等 守望先锋 的 明天开服",
+   "like": 116,
+   "rcount": 32,
+   "observed_at": "2026-11-09T00:43:32+08:00"
+  },
+  {
+   "bvid": "BV1Uu4y117JA",
+   "video_title": "新手玩家第一把打完就卸载了游戏",
+   "rank": 3,
+   "comment": "国服我源氏全收集，可惜玩不到了，当然我也不想去玩2代。。。还有我的金锤，金奶狙， 我的第一个六杀还是大锤拿的，那时候刚开始玩3赛季末，对面进点，我方掉完了等复活，我举着盾蹲墙角拖时间，我看他们围上来想杀我，心一横，开q结果被我一锤子全拍翻[喜极而泣]几锤子下去全抡死，对面后期仇恨全在我身上，很想杀我，但。。。闭着眼睛三锤一个还有冲锋接近对面，那局真就杀疯了，我的第一个金武顺理成章的买了大锤，不过那时候的我不打决胜局绝对不开盾[笑哭]也是挨骂常驻选手",
+   "like": 110,
+   "rcount": 9,
+   "observed_at": "2026-11-09T00:43:32+08:00"
+  },
+  {
+   "bvid": "BV19H4y167Vf",
+   "video_title": "《无期迷途》伊芙角色全方位测评及烙印推荐",
+   "rank": 1,
+   "comment": "感觉拿这个队和流血队比不太合适，流血队只有一狂，这个队核心有三狂",
+   "like": 397,
+   "rcount": 47,
+   "observed_at": "2026-11-09T00:43:33+08:00"
+  },
+  {
+   "bvid": "BV19H4y167Vf",
+   "video_title": "《无期迷途》伊芙角色全方位测评及烙印推荐",
+   "rank": 2,
+   "comment": "说真的，观星干脆直接降到危级得了，我觉得我还能接受一些[笑哭]",
+   "like": 322,
+   "rcount": 41,
+   "observed_at": "2026-11-09T00:43:33+08:00"
+  },
+  {
+   "bvid": "BV19H4y167Vf",
+   "video_title": "《无期迷途》伊芙角色全方位测评及烙印推荐",
+   "rank": 3,
+   "comment": "富佬队比流血队还万能，几乎适配所有图，输出更是爆炸，柳生给了高氪应有的游戏体验[笑哭]流血就更平民向了",
+   "like": 253,
+   "rcount": 18,
+   "observed_at": "2026-11-09T00:43:33+08:00"
+  }
+ ],
+ "douyin": [
+  {
+   "id": "DY01",
+   "url": "https://www.douyin.com/video/7698293770484151418",
+   "author": "听风（OW)",
+   "title": "还是当年入坑吃的好 #守望先锋英雄召集 #守望先锋新手教程 #守望先锋圣邪颂歌 #守望先锋暗红之律",
+   "published": "2026-10-19 16:31",
+   "duration": "0:18",
+   "like": 22000,
+   "comment": 533,
+   "collect": 990,
+   "share": 8464,
+   "found_by": "搜索「守望先锋 回坑」视频 Tab 第 6 位",
+   "type": "梗/情绪短片（UGC）",
+   "note": "粉丝 1.1 万、获赞 149.4 万；标题是一句话，信息全在画面；分享数接近点赞的 40%，评论区按热度看不到长讨论。"
+  },
+  {
+   "id": "DY02",
+   "url": "https://www.douyin.com/video/7699120780726941946",
+   "author": "喂！腹肌给我摸一哈",
+   "title": "OW，杀了个回马枪 守望十周年爆火，到底是OW开窍还是FPS圈没对手？",
+   "published": "2026-10-21 22:00",
+   "duration": "0:25",
+   "like": 37,
+   "comment": 18,
+   "collect": 1,
+   "share": 1,
+   "found_by": "搜索「守望先锋 回坑」视频 Tab 第 2 位",
+   "type": "口播杂谈（回流潮话题）",
+   "note": "25 秒口播讲「回流潮」，封面大字「OW回流潮！到底是游戏变好还是同行FPS衬托」。热评第一：「看到你的视频流量，我只会觉得我进ow信息茧房了」（16 赞）；其余评论在讨论排队时长、新英雄、bug、平衡——回流话题立刻被引向「版本到底好不好」。"
+  },
+  {
+   "id": "DY03",
+   "url": "https://www.douyin.com/video/7689042381408062747",
+   "author": "Kuyo游戏姬",
+   "title": "凉了十年，《守望先锋》还值得玩吗？ 2026年了，《守望先锋》还值得回坑吗？",
+   "published": "2026-09-24 18:11",
+   "duration": "3:29",
+   "like": 62,
+   "comment": 7,
+   "collect": 6,
+   "share": 16,
+   "found_by": "搜索「守望先锋 回坑」视频 Tab 第 1 位",
+   "type": "杂谈长视频（6 个 AI 章节）",
+   "note": "抖音给 3 分钟以上视频自动生成「章节要点」（页面标注「内容由AI生成」）：引言/曾经的辉煌/衰落与重生/现状与分析/是否值得玩/结语。结构是泛泛的「值不值得」，没有告诉回归者具体该做什么。"
+  },
+  {
+   "id": "DY04",
+   "url": "https://www.douyin.com/video/7704926884429887123",
+   "author": "小星（守望先锋）",
+   "title": "正能量夸赞守望先锋新补丁竞逐特签bug",
+   "published": "2026-11-06 13:31",
+   "duration": "2:23",
+   "like": 1559,
+   "comment": 161,
+   "collect": 33,
+   "share": 279,
+   "found_by": "搜索「守望先锋 回坑」视频 Tab 第 10 位",
+   "type": "版本吐槽/问题汇总",
+   "note": "热评第一（48 赞）是一个实际问题：「所以逐竞打满还要自己去领特签吗」——玩家把评论区当问答区用。"
+  },
+  {
+   "id": "DY05",
+   "url": "https://www.douyin.com/video/7693230241526926646",
+   "author": "守望先锋（官方，认证）",
+   "title": "《守望先锋》第五赛季：暗红之律 | 赛季预览",
+   "published": "2026-10-06 01:02",
+   "duration": "2:13",
+   "like": 15000,
+   "comment": 999,
+   "collect": 416,
+   "share": 8714,
+   "found_by": "搜索「守望先锋 暗红之律 赛季预览」",
+   "type": "官方 PV",
+   "note": "官方号粉丝 113.7 万、获赞 1515.5 万。热评前两位（744/727 赞）是梗：「只有岛田家族的人才能驾驭神龙，你究竟是谁」「天天问，我看你们买不买」；评论区几乎不出现「回归/回坑」字样。"
+  },
+  {
+   "id": "DY06",
+   "url": "https://www.douyin.com/video/7703761901913787683",
+   "author": "守望先锋（官方，认证）",
+   "title": "死灵骑士路霸神话皮肤 | 游戏预览（《守望先锋》皮肤展示 第63集）",
+   "published": "2026-11-03 10:10",
+   "duration": "1:04",
+   "like": 24000,
+   "comment": 2368,
+   "collect": 607,
+   "share": 35000,
+   "found_by": "搜索「守望先锋 暗红之律 赛季预览」第 12 位",
+   "type": "官方皮肤预览（合集）",
+   "note": "分享 3.5 万高于点赞 2.4 万。热评第二（1772 赞、151 条回复）：「削弱英雄，出神话皮官方是会玩游戏的」——皮肤预览下最热的讨论是平衡争议。"
+  },
+  {
+   "id": "DY07",
+   "url": "https://www.douyin.com/video/7700536114779557155",
+   "author": "穷哥们游戏频道",
+   "title": "【守望先锋穷哥们】《剑星》联动（系列第318集）",
+   "published": "2026-10-25 17:33",
+   "duration": "1:03",
+   "like": 1361,
+   "comment": 123,
+   "collect": 49,
+   "share": 644,
+   "found_by": "搜索「守望先锋 剑星联动」第 10 位",
+   "type": "系列资讯短评（同一作者同日在 B 站也有系列）",
+   "note": "系列化（第 317–322 集，同一话题标签组），粉丝 5.5 万。热评「预言家来了」77 赞、「我已经准备好笑这场 cosplay 了」50 赞。"
+  },
+  {
+   "id": "DY08",
+   "url": "https://www.douyin.com/video/7704028037838629626",
+   "author": "童老六798",
+   "title": "四款剑星联动特写你最喜欢哪一个？",
+   "published": "2026-11-04 03:23",
+   "duration": "0:22",
+   "like": 541,
+   "comment": 145,
+   "collect": 22,
+   "share": 607,
+   "found_by": "搜索「守望先锋 剑星联动」第 7 位",
+   "type": "投票式短片（UGC）",
+   "note": "标题即提问；作者在评论区逐条回复（可见 3 条作者回复）。热评第一（252 赞）「其实经过我斟酌之后，我跑去买剑星去了」被作者点赞。"
+  },
+  {
+   "id": "DY09",
+   "url": "https://www.douyin.com/video/7704640797009874226",
+   "author": "卡破伏岓",
+   "title": "第五赛季季中补丁分析 #守望先锋 #守望先锋暗红之律",
+   "published": "2026-11-06 19:01",
+   "duration": "8:19",
+   "like": 1213,
+   "comment": 93,
+   "collect": 80,
+   "share": 210,
+   "found_by": "搜索「守望先锋 暗红之律 赛季预览」第 1 位",
+   "type": "补丁分析（与 B 站 BV1gn4b6iEno 同一作者同一主题）",
+   "note": "同一作者同主题：B 站版 11-05 发布，播放 36,106 / 赞 1,086 / 收藏 175 / 评论 543；抖音版 11-06 发布，赞 1,213 / 评论 93 / 收藏 80 / 分享 210。两边口径不同（B 站有播放量，抖音不显示），只能看出：B 站评论数是抖音的约 6 倍，抖音分享数是 B 站转发的量级（B 站 API 未取转发数）。不把差异归因于算法，只记录事实。"
+  }
+ ],
+ "douyin_listing": {
+  "keyword": "守望先锋 回坑（视频 Tab；观察时翻到约前 20 条，保存 13 条，占比以 13 条为分母）",
+  "observed": "2026-11-09",
+  "items": [
+   {
+    "title": "凉了十年，《守望先锋》还值得玩吗？",
+    "author": "Kuyo游戏姬",
+    "age": "1月前",
+    "like": 62,
+    "duration": "3:29"
+   },
+   {
+    "title": "OW，杀了个回马枪 守望十周年爆火",
+    "author": "喂！腹肌给我摸一哈",
+    "age": "2周前",
+    "like": 37,
+    "duration": "0:25"
+   },
+   {
+    "title": "【快充锦囊】ow入坑指南全解析",
+    "author": "Fade(守望先锋ow)",
+    "age": "5月前",
+    "like": 17000,
+    "duration": "5:33"
+   },
+   {
+    "title": "活了？16万玩家回坑守望先锋 OW这波是文艺复兴还是回光返照？",
+    "author": "吟者剑人",
+    "age": "8月前",
+    "like": 410,
+    "duration": "2:20"
+   },
+   {
+    "title": "守望先锋萌新入坑老玩家回流最好的时机 神话棱晶推荐死神的",
+    "author": "里猫不是猫",
+    "age": "5月前",
+    "like": 7000,
+    "duration": "1:06"
+   },
+   {
+    "title": "还是当年入坑吃的好",
+    "author": "听风（OW)",
+    "age": "2周前",
+    "like": 22000,
+    "duration": "0:18"
+   },
+   {
+    "title": "守望先锋日常",
+    "author": "芷沐烟云",
+    "age": "1月前",
+    "like": 116,
+    "duration": "0:39"
+   },
+   {
+    "title": "入坑OW被美少女辱骂只好被迫享受",
+    "author": "汐鱼不吃鱼",
+    "age": "8月前",
+    "like": 18000,
+    "duration": "3:06"
+   },
+   {
+    "title": "新玩家入坑活动又来了，101个补给加2个神话夯爆了",
+    "author": "莓啤汽",
+    "age": "2月前",
+    "like": 3187,
+    "duration": "0:23"
+   },
+   {
+    "title": "正能量夸赞守望先锋新补丁竞逐特签bug",
+    "author": "小星（守望先锋）",
+    "age": "2天前",
+    "like": 1559,
+    "duration": "2:23"
+   },
+   {
+    "title": "守望先锋十周年奖励一览！我宣布直接回坑！",
+    "author": "晚风知我懿",
+    "age": "5月前",
+    "like": 1048,
+    "duration": "1:04"
+   },
+   {
+    "title": "守望先锋开启大清算时代！严查某某电竞 某某俱乐部陪玩代练行为",
+    "author": "红红（ow漫威争锋双修版）",
+    "age": "4天前",
+    "like": 5754,
+    "duration": "0:28"
+   },
+   {
+    "title": "十周年·收尾-别忘了领（运载箱/电竞箱）",
+    "author": "无名hbh",
+    "age": "5月前",
+    "like": 7333,
+    "duration": "2:40"
+   }
+  ],
+  "reading": "保存的 13 条里以「回坑/回流」为题的 5 条（Kuyo、腹肌、吟者剑人、里猫、晚风知我懿），且最近 1 个月内的两条（DY02、DY03）点赞都不到 100；高赞的是梗短片（听风 2.2 万）、入坑指南合集（1.7 万）与十周年福利盘点（7333）。常见话题标签：#守望先锋英雄召集 #守望先锋新手教程 #守望先锋不止FPS #开学就打O/#夏天就打O（成组出现，疑为官方活动话题，属推断）。"
+ },
+ "xhs": [
+  {
+   "id": "XHS01",
+   "url": "https://www.xiaohongshu.com/explore/6acdbbb8000000001802d927",
+   "author": "颜颜吃饭饭",
+   "title": "从没看过ow比赛的人建议去看owcs总决赛吗",
+   "published": "2026-10-13",
+   "like": 95,
+   "type": "提问帖（图文）",
+   "body_excerpt": "ow1玩家，最近一个月回坑ow2，纠结广州的总决赛要不要去：①水平不高（黄金/白金）但又菜又爱玩 ②从没看过任何赛事甚至主播直播，没有支持的队伍，现在补赛事还来得及吗 ③车队里有两个广州的小伙伴 ④今年总决赛在中国，怕以后不在国内，想体验线下气氛；顺便问 owcs 能不能出 cos。#owcs #owcs广州",
+   "top_comment": "可以看，就关注几个点 1️⃣强队：zeta、crazy raccoon（CR）、twisted minds（TM）2️⃣明星选手：shu、violet、quartz、proper、heesang、stalker、junbin 3️⃣国内最火的队伍 WBG（微博 gaming），也叫 once again（OA）……",
+   "note": "这是「回坑一个月的玩家 + 从没看过比赛 + 想去广州」的真实需求样本；最有用的回答是一张「先认识谁」清单。直接对应本项目选题三。"
+  },
+  {
+   "id": "XHS02",
+   "url": "https://www.xiaohongshu.com/explore/6ae7f7f2000000001200b475",
+   "author": "大乌堆（沉迷apex版）",
+   "title": "ow回坑复建找快速搭子",
+   "published": "2026-11-03（页面显示 6天前）",
+   "like": 0,
+   "comment": 0,
+   "type": "找搭子帖",
+   "body_excerpt": "目前是一到两个人 标准社畜 游戏时间都是晚上 周末双休 白天能玩 找一起玩的朋友 心态好 不压力 国服多赛季宗师百强 全位置自由人 #守望先锋归来",
+   "note": "搜索「守望先锋回坑」观察时在前 30 条里数到 9 条找固玩/找队友/找搭子（栗子、予苏、大乌堆、北北珂、一气画九饼、心碎、我是一只鼠、Lepus_timidus、gkxvdh53）；列表只保存了 19 条，其中 8 条可复核（gkxvdh53 未保存），文档一律写「19 条中 8 条」，多数 0–20 赞、评论区常为空；页面「猜你想搜」给出「守望先锋找搭子」。"
+  },
+  {
+   "id": "XHS03",
+   "url": "https://www.xiaohongshu.com/explore/6a1eca0b000000000702af9d",
+   "author": "SummerLA",
+   "title": "为什么觉得OW比以前好玩了？？是我的错觉吗",
+   "published": "2026-06-02",
+   "like": 47,
+   "type": "提问帖",
+   "top_comment": "论游戏性肯定现在好玩呀，但是你放到16年呢，人的阈值一直在变的……16年的ow能拿tga年度，26年的ow可以吗？",
+   "note": "回流玩家典型心理：怀疑自己的感受，需要别人确认「现在值不值」。"
+  },
+  {
+   "id": "XHS04",
+   "url": "https://www.xiaohongshu.com/explore/6aea45af0000000016012546",
+   "author": "焦糖布丁（守望先锋）",
+   "title": "再见了，所有安娜玩家。",
+   "published": "2026-11-05（页面显示 编辑于 4天前）",
+   "like": 278,
+   "collect": 26,
+   "comment": 296,
+   "type": "单句情绪帖 + 转载补丁图",
+   "body_excerpt": "正文只有标题一句；首图是《守望先锋》新赛季补丁平衡调整的横版图文。#守望先锋 #守望先锋2 #游戏 #有缘再见吧",
+   "top_comment": "干脆把猫删了呗我真服了（39 赞/12 回复）；「血律肯定不会再见啊，只是从非常非常超模变成了非常超模而已，就像雾子大人」",
+   "note": "评论数 296 ＞ 点赞 278：一句话的英雄专属情绪题引出大量讨论，而同主题的完整补丁说明（XHS06）只有 55 条评论。"
+  },
+  {
+   "id": "XHS05",
+   "url": "https://www.xiaohongshu.com/explore/6ae9bbb3000000001600665c",
+   "author": "守望先锋（官方账号）",
+   "title": "向违规行为重拳出击！游戏环境治理专项行动即将启动",
+   "published": "2026-11-04（页面显示 5天前）",
+   "like": 293,
+   "collect": 24,
+   "comment": 381,
+   "type": "官方公告（海报 + 长文）",
+   "body_excerpt": "六项治理举措严打代练、演员、剧组、炸鱼、外挂……新增处罚生效时间 2026年11月4日 00:00，具体措施与举报指引见图片。#守望先锋 #守望先锋暗红之律",
+   "top_comment": "一支职业战队账号的长篇表态「坚决拥护并全力支持……」",
+   "note": "官方号在小红书有运营；公告类内容评论 381 ＞ 点赞 293。"
+  },
+  {
+   "id": "XHS06",
+   "url": "https://www.xiaohongshu.com/explore/6aea40e7000000000e02c7e9",
+   "author": "小鱿万事屋",
+   "title": "《守望先锋》补丁说明 – 2026年11月4日",
+   "published": "2026-11-05（页面显示 4天前）",
+   "like": 84,
+   "collect": 12,
+   "comment": 55,
+   "type": "资讯图文（多页信息长图）",
+   "body_excerpt": "首图为「第5赛季 季中补丁说明 2026.11.04 北京时间·中文译文」分栏长图：活动与奖励（争霸之战 11.3–12.7；OWCS 全球总决赛助威活动 11.24–12.7、12.2–12.6 观赛额外奖励；「狂鼠」补给狩猎 11.21–11.23 双倍经验）。页面标注「作者声明：含AI生成内容」，标签含 #vibecoding。",
+   "top_comment": "血律砍了我觉得正常，本来就是数值怪，但是能不能别总改手感啊，我真的服了（11 赞）",
+   "note": "同一作者同日另一条《守望先锋第五赛季季中补丁：英雄增强削弱》223 赞——按英雄拆开讲的版本比完整补丁说明赞数高 2.6 倍（观察，不做因果判断）。"
+  },
+  {
+   "id": "XHS07",
+   "url": "https://www.xiaohongshu.com/explore/6ae473b10000000019000229",
+   "author": "守望先锋（官方账号）",
+   "title": "疯狂谜影即将结束，别错过莱因哈特传奇皮肤",
+   "published": "2026-10-30",
+   "like": 96,
+   "collect": 8,
+   "comment": 108,
+   "type": "官方活动提醒",
+   "body_excerpt": "疯狂谜影限时模式将于 11 月 4 日凌晨结束……艾什、莫伊拉、温斯顿三位英雄现已悉数加入战场……免费解锁多款个性化物品、大量补给以及全新充气战甲莱因哈特传奇皮肤。",
+   "top_comment": "我要这个模式常驻！！（LunarColony）",
+   "note": "与「这个模式能不能常驻啊」（池池米团 10-16，192 赞）、「疯狂谜影戒断了」（类蕨生物 11-06，69 赞）、「疯狂谜影有望成为新的常驻模式？」（五德猫 10-31，14 赞）形成同一诉求的多个 UGC 帖。"
+  }
+ ],
+ "xhs_listing": [
+  {
+   "keyword": "守望先锋回坑（观察时翻到约前 30 条，保存 19 条，占比以 19 条为分母）",
+   "observed": "2026-11-09",
+   "items": "找队友，好想上分……（栗子，昨天，6）；ow复建选手找固玩（予苏，10-13）；ow回坑复建找快速搭子（大乌堆，6天前）；从没看过ow比赛的人建议去看owcs总决赛吗（颜颜吃饭饭，10-13，95）；有没有ow固！（北北珂，08-24，2）；固队来固队来（一气画九饼，10-21，6）；又回去玩守望了。（麦旋风清理大师，09-26，1）；为什么觉得OW比以前好玩了（SummerLA，06-02，47）；为什么会越打越马（magnlia，10-12，7）；出走守望多年，回来依旧新手（momo，08-11，4）；守望我投降了（Ryoko，5天前，16）；请帮帮我…我不想这么菜菜的（鸡米妈，10-30，6）；蹲ow固玩（心碎，11-01，17）；这个模式能不能常驻啊（池池米团，10-16，192）；疯狂谜影戒断了（类蕨生物，3天前，69）；《守望先锋》补丁说明 – 2026年11月4日（小鱿万事屋，4天前，84）；新手如何玩守望先锋（卷心菜个der，1天前，3）；有木有人一起打o呀（我是一只鼠，3天前，7）；来点人一起耍起OW！（Lepus_timidus，1天前，4）",
+   "related_searches": "守望先锋回坑找人 / 回坑找队友 / 回坑上分 / 回坑组队 / 回坑玩家 / 回坑攻略 / 回坑经历 / 回坑值得吗 / 退坑现状 / 入侵礼包"
+  },
+  {
+   "keyword": "守望先锋剑星联动",
+   "observed": "2026-11-09",
+   "items": "《守望先锋》x《剑星》联动主视觉图（萨满萨满萨满，10-26，601）；《守望先锋》x《剑星》联动预告（萨满萨满萨满，10-23，310）；路霸神话皮肤官宣！季中更新前瞻（黑爪情报站，5天前，75）；ow联动剑星干得漂亮啊（月半劳，10-23，76）；守望先锋×剑星全新主视觉公开（小鱿万事屋，10-25，70）；【OW】守望先锋×剑星联动确认！（照不亮的光ii，10-23，43）；守望先锋 x 剑星 士兵：76概念原画（萨满萨满萨满，4天前，42）；ow即将联动剑星！哪个英雄最适合联动这个呢？（ki啦ki啦b布，10-23，37）；《守望先锋》联动剑星的一点看法（守望淋锋，10-25，29）；【OW】剑星联动皮肤鉴赏（照不亮的光ii，4天前，27）；剑星联动特写合集（小鱿万事屋，4天前，24）；守望先锋联动本质上就是角色玩cosplay（牢玛刹刹的，昨天，18）",
+   "related_searches": "守望先锋剑星联动开启时间 / 什么时候上线 / 上线时间 / 守望先锋平衡补丁 / 弗蕾娅剑星联动皮肤演示",
+   "reading": "小红书上联动话题最高赞是官方主视觉图的转发（601/310），其次是前瞻与观点帖；「什么时候上线/开启时间」是搜索联想的前三位——用户在小红书找「时间与一句话结论」，不找 10 分钟测评。"
+  },
+  {
+   "keyword": "守望先锋 补丁说明 11月4日",
+   "observed": "2026-11-09",
+   "items": "《守望先锋》补丁说明 – 2026年11月4日（小鱿万事屋，84）；再见了，所有安娜玩家。（焦糖布丁，278）；疯狂谜影即将结束，别错过莱因哈特传奇皮肤（官方，10-30，96）；守望先锋第五赛季季中平衡补丁速览（小鱿万事屋，15）；神话商城·全攻略最新版（无名hbh，28）；向违规行为重拳出击（官方，5天前，293）；守望先锋第五赛季季中补丁：英雄增强削弱（小鱿万事屋，223）；猜猜哪个辅助变成250血了（郁朦，10-14，217）；机动推进，人多真的推得更快（小鱿万事屋，5天前，81）；[内含剧透]守望先锋第五赛季未来剧情前瞻（小鱿万事屋，3天前，47）；喝茶、下毒削弱！【11.4补丁】（村雨不会下棋，17）；季中更新速览，名牌切换，商城和英雄更新（Roadhog里柒，4）；这个模式能不能常驻啊（池池米团，10-16，192）；《守望先锋》x《剑星》联动主视觉图（萨满萨满萨满，10-26，601）",
+   "reading": "同一补丁节点，小红书上得到最多互动的是「一句话 + 英雄专属情绪」（再见安娜 278/296 评论；猜猜哪个辅助 217）和「按英雄拆解」（223），完整补丁说明 84；官方公告 293/381 评论。"
+  }
+ ],
+ "judgements": [
+  {
+   "id": "J01",
+   "source": "B 站样本",
+   "obs": "2026-10-07 后 OW 相关样本中「回归/老玩家」主题条数少、而「新手/教学」「版本/补丁」多（见「B站主题统计」表）；10-15 研究 3,760 条里明确面向回归者的只有 18 条",
+   "kind": "案例观察",
+   "impact": "两批检索样本都显示面向回归者的内容很少：做「回坑说明书」是补样本里缺的一类内容；样本不是全量，需求强度留给试读验证，不写「全平台空白」。"
+  },
+  {
+   "id": "J02",
+   "source": "B 站 BV1gn4b6iEno / 抖音 DY09",
+   "obs": "同一作者「卡破伏岓」同主题补丁分析：B 站 8 分钟版评论 543、收藏 175；抖音 8 分钟版评论 93、分享 210",
+   "kind": "案例观察",
+   "impact": "B 站承载长讨论与收藏，适合放完整版说明书视频；抖音更像转发传播，不作为本方案主阵地。"
+  },
+  {
+   "id": "J03",
+   "source": "B 站 BV1hE5RzfE2D 热评",
+   "obs": "《穷哥们》「10-14 战令自选优先级」热评是具体的兑换顺序建议（1226 / 740 / 487 赞）",
+   "kind": "案例观察",
+   "impact": "回归者对「先领什么、先补哪期」有真实决策需求 → 选题二做成可照着做的清单，而不是泛讲福利。"
+  },
+  {
+   "id": "J04",
+   "source": "B 站 BV1erc6ecEW4 热评",
+   "obs": "「守望国服回归怎么把皮肤领齐」热评第一是 695 赞的「省流」分步说明",
+   "kind": "案例观察",
+   "impact": "评论区会自发产出「省流版」；我们在正文里先给省流，再给细节，并在置顶评论放可复制清单。"
+  },
+  {
+   "id": "J05",
+   "source": "小红书 XHS01",
+   "obs": "回坑一个月的玩家提问「从没看过比赛建议去看 owcs 总决赛吗」（10-13，95 赞），最佳回答是「先认识哪些队和选手」的清单",
+   "kind": "案例观察",
+   "impact": "选题三的形态定为「回归者视角的观赛入门清单」，而非赛事战报。"
+  },
+  {
+   "id": "J06",
+   "source": "小红书 搜索「守望先锋回坑」列表",
+   "obs": "保存的 19 条里 8 条是找固玩/找搭子（观察时前 30 条中数到 9 条，完整列表未保存），多数 0–20 赞、评论区空；联想词前列是「回坑找人 / 找队友 / 组队」",
+   "kind": "案例观察",
+   "impact": "「和谁玩」是小红书上一类明显的需求线索 → 每篇小红书样稿末尾固定一个「留下段位+时段」的组队互动位，试一试评论区能不能接住。"
+  },
+  {
+   "id": "J07",
+   "source": "小红书 XHS04 vs XHS06",
+   "obs": "同一补丁节点：「再见了，所有安娜玩家。」278 赞 / 296 评论；完整《补丁说明》84 赞 / 55 评论；按英雄拆解的《英雄增强削弱》223 赞",
+   "kind": "案例观察（不做因果归因）",
+   "impact": "小红书版本内容按「我的本命怎么了」切，而不是整份补丁；标题只提一个英雄或一个结论。"
+  },
+  {
+   "id": "J08",
+   "source": "小红书 XHS05 / XHS07（官方账号）",
+   "obs": "官方公告「向违规行为重拳出击」293 赞 / 381 评论；「疯狂谜影即将结束」96 赞 / 108 评论，热评「我要这个模式常驻」",
+   "kind": "案例观察",
+   "impact": "官方已在小红书运营公告类内容，评论多于赞；我们的内容不重复公告，而是把公告翻译成「对回归者意味着什么」。"
+  },
+  {
+   "id": "J09",
+   "source": "抖音 搜索「守望先锋 回坑」列表",
+   "obs": "保存的 13 条里以回坑/回流为题 5 条，其中最近一个月的两条（DY02 25 秒短片、DY03 3 分半解说）点赞均不足 100；高赞是 18 秒梗片（DY01 2.2 万）与入坑指南合集（1.7 万）",
+   "kind": "案例观察",
+   "impact": "两条样本不足以判断抖音回坑内容的普遍表现，本期不做是制作资源取舍；如果日后做抖音版，形态应是 15–30 秒梗向开头 + 评论区放说明书链接，本期不展开。"
+  },
+  {
+   "id": "J10",
+   "source": "抖音 DY05 / DY06（官方账号）",
+   "obs": "官方 PV 1.5 万赞 / 8714 分享（分享低于点赞）；神话皮预览 2.4 万赞 / 3.5 万分享（分享高于点赞），热评是平衡吐槽（1772 赞）",
+   "kind": "案例观察",
+   "impact": "两条官方案例方向相反，不概括成平台规律；说明书里保留一句「发给回坑朋友」的分享话术，作为待验证的设计。"
+  },
+  {
+   "id": "J11",
+   "source": "抖音 DY04 / DY08",
+   "obs": "评论区高赞多为具体问题（「竞逐打满还要自己领特签吗」48 赞）或作者逐条回复（童老六）",
+   "kind": "案例观察",
+   "impact": "样稿的互动设计把「作者按可投入时间回复、先回具体问题」写进执行项；FAQ 从评论区问题生成。"
+  },
+  {
+   "id": "J12",
+   "source": "小红书 XHS06 标注",
+   "obs": "资讯号补丁图文标注「含AI生成内容」且带 #vibecoding 标签，仍获 84 赞 / 12 收藏",
+   "kind": "案例观察",
+   "impact": "一个案例说明带 AI 声明的图文也能获得互动，不代表平台政策；本项目若生成环节用到 AI，按发布页当时的规则声明。"
+  },
+  {
+   "id": "J13",
+   "source": "官网 24303010（11-04 季中更新）",
+   "obs": "争霸之战 11-04 至 12-08：24 级活动战令，免费线靠游玩与完成挑战推进、推到位解锁史诗西格玛皮肤；狂鼠补给狩猎 11-21 至 24 双倍经验；OWCS 总决赛 12-02 至 06 广州",
+   "kind": "官方规则/公告",
+   "impact": "排期锚点：11-10 起 7 周到总决赛；选题二在 11-21 双倍经验前发，选题三在 12-02 前一周发。"
+  },
+  {
+   "id": "J14",
+   "source": "官网 S09 / S10",
+   "obs": "返场战令可从当时进度继续、免费进度继承；新手福利限注册不足 60 天的新账号",
+   "kind": "官方规则/公告",
+   "impact": "说明书明确告诉回归者「哪些福利你有、哪些没有」，不制造虚假期待；核心卖点是「进度没丢」而非「送东西」。"
+  }
+ ],
+ "facts": [
+  {
+   "id": "F01",
+   "when": "2026-08-12",
+   "fact": "第 4 赛季「釜山群英」上线，新重装 D.Mon；战令改版为可自选顺序的升级路线",
+   "source": "官网 24295381 / 24296053（S01、S02）",
+   "kind": "官方"
+  },
+  {
+   "id": "F02",
+   "when": "2026-09-13 至 10-06",
+   "fact": "暴雪嘉年华期间完成一局得神话代券，可换第 1–14 赛季任一神话礼包（已截止）",
+   "source": "官网 24294376（S07）",
+   "kind": "官方"
+  },
+  {
+   "id": "F03",
+   "when": "2026-09-23",
+   "fact": "国服累计禁赛 30,776 账号、回收奖励 38,757 账号（官方自报）；代练双方与炸鱼关联大号连坐",
+   "source": "官网 20260923/41367_1314781（S08）",
+   "kind": "官方"
+  },
+  {
+   "id": "F04",
+   "when": "2026-10-07",
+   "fact": "第 5 赛季「暗红之律」：新支援「血律」；黑影由输出改为支援；多年来首张新运载地图；第 1–9、15 赛季往期战令返场，可从当时进度继续，免费进度继承",
+   "source": "官网 24303008（S09）",
+   "kind": "官方"
+  },
+  {
+   "id": "F05",
+   "when": "2026-10-07",
+   "fact": "「圣邪颂歌」登录送 3 抽；注册不足 60 天的新玩家完成新手任务免费得满级神话皮肤——回归老账号不适用",
+   "source": "官网 269312113（S10）",
+   "kind": "官方"
+  },
+  {
+   "id": "F06",
+   "when": "2026-11-04",
+   "fact": "季中更新：争霸之战活动战令 11-04 至 12-08，24 级；免费线「通过游玩和完成挑战逐步赢得」、最终解锁史诗西格玛换色皮肤，不是登录即得；1000 金币升级开第二条路线，最终解锁传奇末日铁拳皮肤 / 斩仇传奇武器；伊芙计划（剑星）联动 11-04 至 11-18；死灵骑士路霸神话皮肤；轰轰钻机挖宝 11-04 至 12-08；狂鼠补给狩猎 11-21 至 24 双倍经验；竞逐 12-04 至 08；黑色星期五促销 11-04 至 12-08",
+   "source": "官网 24303010《黑爪之治第5赛季季中更新》",
+   "kind": "官方"
+  },
+  {
+   "id": "F07",
+   "when": "2026-11-04 00:00 生效",
+   "fact": "游戏环境治理专项行动：六项举措，严打代练、演员、剧组、炸鱼、外挂",
+   "source": "官网 20261103/41367_1318539、20261104/41365_1318531；小红书官方 XHS05",
+   "kind": "官方"
+  },
+  {
+   "id": "F08",
+   "when": "2026-11-04 凌晨结束",
+   "fact": "万圣节限时模式「疯狂谜影」结束；UGC 多帖要求常驻（192 / 69 赞）",
+   "source": "小红书官方 XHS07 + UGC 列表",
+   "kind": "官方 + 案例观察"
+  },
+  {
+   "id": "F09",
+   "when": "2026-12-02 至 12-06",
+   "fact": "OWCS 2026 全球总决赛在广州：02/03 演播室阶段，04–06 广州体育馆；助威活动 12-03 至 07",
+   "source": "广州白云区官媒（S14）；官网 24303010",
+   "kind": "官方/官媒"
+  },
+  {
+   "id": "F10",
+   "when": "2026-10-03 至 11-08",
+   "fact": "OWCS 中国赛区第三赛段 8 队；11-07/08 B 站出现「WBG 零封 AG」「国区冠军采访」等 UGC 标题——晋级总决赛的中国队名单以官方公布为准，本项目标「待核验」",
+   "source": "Liquipedia（S15）+ B 站标题观察",
+   "kind": "第三方 + 待核验"
+  },
+  {
+   "id": "F11",
+   "when": "2026-07（第 3 赛季）",
+   "fact": "官方披露每日模式分布约数：5v5 预设休闲 54% / 竞技 37%；6v6 开放休闲 19% / 竞技 8%；分母与统计窗口官方未说明，只用于「6v6 参与比例明显低于 5v5」，不推算排队时长",
+   "source": "官网 24289101（S12）",
+   "kind": "官方"
+  },
+  {
+   "id": "F12",
+   "when": "2026-08-12、10-07",
+   "fact": "英雄总数 52 → 54；职责 输出 24→23、支援 14→16、重装 14→15；为 8 月与 10 月两个快照之差，不是长期离开者错过的全部",
+   "source": "OverFast API（S16）",
+   "kind": "第三方数据接口"
+  },
+  {
+   "id": "F13",
+   "when": "检索日 2026-10-15",
+   "fact": "B 站官方视频号 51.1 万粉、电竞官方号 40.2 万粉；窗口内官方 17 条新手英雄教学全部面向新手，无一条面向回归者",
+   "source": "B 站公开接口（S17）+ 10-15 样本",
+   "kind": "案例观察"
+  }
+ ],
+ "limits": [
+  "抖音：视频页不显示播放量；搜索结果按相关度排序且只显示相对日期，精确发布时间需逐条打开；评论只看了默认排序前 5–6 条。",
+  "小红书：搜索结果不显示收藏/评论，需进入笔记；本次进入 7 条，其余引用列表数据（标题、作者、日期、赞）。",
+  "两平台均为本人账号登录态下的观察，个性化可能影响搜索排序；不以此推断平台总体分布。",
+  "B 站：公开搜索接口的 pubtime 过滤未生效，按返回的 pubdate 本地筛选 ≥2026-10-07 共 243 条；评论只取匿名态首页热评（每条视频 3 条）。",
+  "抖音搜索列表只保存了 13 条、小红书「守望先锋回坑」列表只保存了 19 条；观察时翻到的「前 20 / 前 30 条」无法从记录完整复算，所有占比以保存条目为分母，原始页面不可重现。",
+  "抖音官方账号只观察了两条（DY05 分享低于点赞、DY06 分享高于点赞），不概括官方内容的分享规律；抖音「回坑」口播只有两条近一月样本，不据此判断平台是否适合。",
+  "B 站原始数据已删除 UP 主 mid 字段（2026-11-09），评论数据从未保存评论者 UID。"
+ ],
+ "sample7": {
+  "topic": "选题一 · 小红书版「回坑先查本命｜黑影玩家注意」",
+  "status": "文字已排版，未发布、未试读",
+  "date": "2026-11-09",
+  "cards": [
+   {
+    "n": 1,
+    "title": "回来先做哪一步",
+    "quote": "先查本命，再开一局。",
+    "body": "想想你最后一次玩是哪个赛季。今天只做两件事：看本命的技能有没有变，去靶场打十分钟。",
+    "src": "复建建议"
+   },
+   {
+    "n": 2,
+    "title": "先查你的本命",
+    "quote": "黑影改成支援了。",
+    "body": "10 月 7 日第 5 赛季起生效（官网公告）。先进游戏看技能面板和职责标签，再决定还练不练；别用「史上最削」这类标题判断强弱。",
+    "src": "官网 24303008"
+   },
+   {
+    "n": 3,
+    "title": "旧战令怎么接",
+    "quote": "进度没丢，但解锁不等于白送。",
+    "body": "第 1–9、15 赛季往期战令返场，能从当年进度继续，免费进度也继承（官网 10 月 6 日公告）。解锁往期战令的条件与价格以游戏内为准；别把高级奖励当成登录赠送。",
+    "src": "官网 24303008"
+   },
+   {
+    "n": 4,
+    "title": "活动怎么拿奖励",
+    "quote": "免费的也要玩出来。",
+    "body": "争霸之战 11 月 4 日至 12 月 8 日，24 级活动战令。免费线靠游玩和完成挑战推进，推到位才解锁史诗西格玛皮肤，不是上线就领（官网 11 月 4 日公告）。",
+    "src": "官网 24303010"
+   },
+   {
+    "n": 5,
+    "title": "时间怎么安排",
+    "quote": "现在就能玩，不用等双倍。",
+    "body": "11 月 21 日至 24 日狂鼠补给狩猎期间有双倍经验（官网 11 月 4 日公告）。按自己的空闲时间玩，这四天用来集中补进度。",
+    "src": "官网 24303010"
+   },
+   {
+    "n": 6,
+    "title": "第一局怎么玩",
+    "quote": "先找手感，再上竞技。",
+    "body": "先去靶场确认按键和技能，再打一局非竞技模式。这是复建建议，不是官方的回归奖励条件。",
+    "src": "复建建议"
+   },
+   {
+    "n": 7,
+    "title": "还有哪里没跟上",
+    "quote": "留一个具体卡点。",
+    "body": "评论区写：离开多久 + 本命 + 最困惑的一件事。我按人回；想找人一起玩的，可以顺手留段位和在线时段。",
+    "src": "互动设计"
+   }
+  ]
+ }
+}</script>
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const fmt = n => (n==null||n==='') ? '—' : Number(n).toLocaleString('zh-CN');
+  const pct = x => x==null ? '—' : (x*100).toFixed(2)+'%';
+  const link = (u,t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`;
+  const table = (cols, rows, cls='tbl stack') => {
+    const th = cols.map(c=>`<th>${esc(c.h)}</th>`).join('');
+    const tr = rows.map(r=>'<tr>'+cols.map(c=>`<td data-h="${esc(c.h)}"${c.num?' class="num"':''}>${c.f(r)}</td>`).join('')+'</tr>').join('');
+    return `<table class="${cls}"><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table>`;
+  };
+  document.getElementById('obs').textContent = D.observed_at;
+  document.getElementById('n-ow').textContent = D.bilibili.n_ow;
+  document.getElementById('stats').innerHTML = [
+    [D.bilibili.n_ow, 'B 站 10-07 后 OW 相关视频（样本）'],
+    ['0', '其中以回归玩家为题'],
+    [D.douyin.length, '抖音逐条观察'],
+    [D.xhs.length, '小红书逐条观察'],
+    ['3 × 2', '选题 × 平台样稿（1 份已排成七图文字）'],
+    ['0', '已发布 / 已采到的运营数据'],
+  ].map(([b,s])=>`<div class="stat"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join('');
+
+  document.getElementById('judgements').innerHTML = table([
+    {h:'编号', f:r=>esc(r.id)}, {h:'来源', f:r=>esc(r.source)}, {h:'观察到什么', f:r=>esc(r.obs)},
+    {h:'性质', f:r=>esc(r.kind)}, {h:'对设计的影响', f:r=>esc(r.impact)}], D.judgements);
+
+  document.getElementById('themes').innerHTML = table([
+    {h:'主题', f:r=>esc(r.theme)}, {h:'条数', f:r=>fmt(r.n), num:true}, {h:'播放中位数', f:r=>fmt(r.median_play), num:true},
+    {h:'赞/播放 中位', f:r=>pct(r.median_like_rate), num:true}, {h:'收藏/播放 中位', f:r=>pct(r.median_fav_rate), num:true},
+    {h:'评论/播放 中位', f:r=>pct(r.median_reply_rate), num:true}], D.bilibili.themes) +
+    `<p class="small">样本 ${fmt(D.bilibili.n_total)} 条 → 发布 ≥ 10-07 共 ${fmt(D.bilibili.n_recent)} 条 → 剔除非 OW 内容 ${fmt(D.bilibili.n_ow)} 条。主题按标题关键词归类，是粗分类。</p>`;
+
+  document.getElementById('btop').innerHTML = table([
+    {h:'发布', f:r=>esc(r.pubdate_bjt)}, {h:'主题', f:r=>esc(r.theme)}, {h:'标题', f:r=>link(r.url, r.title)}, {h:'UP 主', f:r=>esc(r.author)},
+    {h:'时长', f:r=>esc(r.duration)}, {h:'播放', f:r=>fmt(r.play), num:true}, {h:'赞', f:r=>fmt(r.like), num:true},
+    {h:'收藏', f:r=>fmt(r.favorites), num:true}, {h:'评论', f:r=>fmt(r.review), num:true}], D.bilibili.top);
+
+  document.getElementById('bcomments').innerHTML = table([
+    {h:'视频', f:r=>esc(r.video_title)}, {h:'#', f:r=>esc(r.rank)}, {h:'评论', f:r=>esc(r.comment)}, {h:'赞', f:r=>fmt(r.like), num:true}], D.comments);
+
+  document.getElementById('douyin').innerHTML = table([
+    {h:'编号', f:r=>esc(r.id)}, {h:'发布', f:r=>esc(r.published)}, {h:'作者', f:r=>esc(r.author)}, {h:'标题', f:r=>link(r.url, r.title)},
+    {h:'时长', f:r=>esc(r.duration)}, {h:'赞', f:r=>fmt(r.like), num:true}, {h:'评论', f:r=>fmt(r.comment), num:true},
+    {h:'收藏', f:r=>fmt(r.collect), num:true}, {h:'分享', f:r=>fmt(r.share), num:true}, {h:'类型', f:r=>esc(r.type)}, {h:'观察笔记', f:r=>esc(r.note)}], D.douyin);
+
+  document.getElementById('dylist').innerHTML = table([
+    {h:'标题', f:r=>esc(r.title)}, {h:'作者', f:r=>esc(r.author)}, {h:'页面时间', f:r=>esc(r.age)}, {h:'赞', f:r=>fmt(r.like), num:true}, {h:'时长', f:r=>esc(r.duration)}], D.douyin_listing.items)
+    + `<p class="small">${esc(D.douyin_listing.reading)}</p>`;
+
+  document.getElementById('xhs').innerHTML = table([
+    {h:'编号', f:r=>esc(r.id)}, {h:'发布', f:r=>esc(r.published)}, {h:'作者', f:r=>esc(r.author)}, {h:'标题', f:r=>link(r.url, r.title)},
+    {h:'类型', f:r=>esc(r.type)}, {h:'赞', f:r=>fmt(r.like), num:true}, {h:'收藏', f:r=>fmt(r.collect), num:true}, {h:'评论', f:r=>fmt(r.comment), num:true},
+    {h:'正文摘录', f:r=>esc(r.body_excerpt||'')}, {h:'热评', f:r=>esc(r.top_comment||'')}, {h:'观察笔记', f:r=>esc(r.note)}], D.xhs);
+
+  document.getElementById('xhslist').innerHTML = D.xhs_listing.map(x=>`<h4>「${esc(x.keyword)}」</h4><p class="small">${esc(x.items)}</p>${x.related_searches?`<p class="small"><strong>联想搜索：</strong>${esc(x.related_searches)}</p>`:''}${x.reading?`<blockquote>${esc(x.reading)}</blockquote>`:''}`).join('');
+
+  document.getElementById('cards7').innerHTML = D.sample7.cards.map(c=>`<div class="card7"><span class="n">第 ${esc(c.n)} 图</span><h4>${esc(c.title)}</h4><p class="q">「${esc(c.quote)}」</p><p>${esc(c.body)}</p><span class="src">来源：${esc(c.src)}</span></div>`).join('');
+
+  document.getElementById('limits').innerHTML = D.limits.map(l=>`<li>${esc(l)}</li>`).join('');
+
+  document.getElementById('facts-tbl').innerHTML = table([
+    {h:'编号', f:r=>esc(r.id)}, {h:'时间', f:r=>esc(r.when)}, {h:'事实', f:r=>esc(r.fact)}, {h:'来源', f:r=>esc(r.source)}, {h:'性质', f:r=>esc(r.kind)}], D.facts);
+})();
+</script>
+</body>
+</html>
